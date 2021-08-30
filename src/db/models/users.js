@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
             passcode: DataTypes.STRING,
             birthday: DataTypes.DATE,
             stadium_id: DataTypes.UUID,
+            role: DataTypes.STRING,
         },
         { underscored: true }
     );

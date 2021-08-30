@@ -11,6 +11,7 @@ class UserRepo {
             city: user.city,
             photo: user.photo,
             birthday: user.birthday,
+            role: user.role
         }
     }
 
