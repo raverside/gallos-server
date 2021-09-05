@@ -20,6 +20,14 @@ class StadiumRepo {
         return await stadiums.findOne({where: {id}});
     }
 
+    async getStadiums(filterQuery, page, order) {
+        // const limit = 10;
+        // const offset = limit * page;
+
+        // return await stadiums.findAll({where: {...{role:"user???"}, ...filterQuery}, order, offset, limit});
+        return await stadiums.findAll({where: filterQuery, order});
+    }
+
 }
 
 module.exports = new StadiumRepo();

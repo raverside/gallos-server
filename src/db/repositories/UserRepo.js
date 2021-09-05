@@ -1,4 +1,7 @@
 const {users} = require('../models');
+const {users_notes} = require('../models');
+const {stadiums} = require('../models');
+const Sequelize = require('sequelize');
 
 class UserRepo {
 
@@ -11,18 +14,54 @@ class UserRepo {
             city: user.city,
             photo: user.photo,
             birthday: user.birthday,
-            role: user.role
+            role: user.role,
+            labels: user.labels,
+            notes: user.user_notes,
+            stadium: user.stadium,
+            created_at: user.created_at,
+            last_login: user.last_login,
         }
     }
 
+    includeQuery() {
+        return [{model: users_notes, as: 'user_notes', include: {model: users, as: 'creator'}}, {model: stadiums}];
+    }
+
     async getUserById(id) {
-        return await users.findOne({ where: {id} });
+        return await users.findOne({ where: {id}, include: this.includeQuery() });
     }
 
     async getUserByUsername(username) {
-        return await users.findOne({ where: {username} });
+        return await users.findOne({ where: {
+            $and: Sequelize.where(Sequelize.fn('lower', Sequelize.col('username')), Sequelize.fn('lower', username))
+        }, include: this.includeQuery() });
     }
 
+    async getUsers(filterQuery, page, order) {
+        const limit = 10;
+        const offset = limit * page;
+
+        return await users.findAll({where: {...{role:"user"}, ...filterQuery}, order, offset, limit});
+    }
+
+    async updateUser(id, newValues) {
+        return await users.update(newValues, {where: {id}});
+    }
+
+    async createNote(user_id, title, note) {
+        const newNote = await users_notes.create({user_id, title, note});
+        return await this.getUserById(newNote.user_id);
+    }
+
+    async updateNote(id, title, note) {
+        const updatedNote = await users_notes.update({title, note}, {where: {id}, returning:true});
+
+        return await this.getUserById(updatedNote[1]?.user_id) || false;
+    }
+
+    async removeNote(id) {
+        return await users_notes.destroy({where: {id}});
+    }
 }
 
 module.exports = new UserRepo();

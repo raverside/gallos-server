@@ -22,7 +22,10 @@ module.exports = {
       silver_two: Sequelize.INTEGER,
       gold_one: Sequelize.INTEGER,
       gold_two: Sequelize.INTEGER,
-      stadium_id: Sequelize.UUID,
+      stadium_id: {
+        type: Sequelize.UUID,
+        references: { model: 'stadiums', key: 'id' }
+      },
       created_at: {
         allowNull: false,
         type: Sequelize.DATE

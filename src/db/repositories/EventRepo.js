@@ -28,10 +28,10 @@ class EventRepo {
         }
     }
 
-    async getEventsByStadiumId(stadium_id, filterQuery, page) {
+    async getEventsByStadiumId(stadium_id, filterQuery, page, order) {
         const limit = 5;
         const offset = limit * page;
-        return await events.findAll({where: {...{stadium_id}, ...filterQuery}, offset, limit, include: [stadiums]});
+        return await events.findAll({where: {...{stadium_id}, ...filterQuery}, order, offset, limit, include: [stadiums]});
     }
 
     async countEventsByStadiumId(stadium_id) {

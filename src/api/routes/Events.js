@@ -5,10 +5,18 @@ const multer  = require('multer');
 const upload = multer({ dest: 'public/uploads/' }).single('event');
 
 express.get('/getEvents', routeHandler(async (request, response) => {
-    const dateFilter = request.query.dateFilter || "today";
+    const dateFilter = request.query.dateFilter;
+    const filter = {
+        search: request.query.search || "",
+        country: request.query.country || undefined,
+        state: request.query.state || undefined,
+        city: request.query.city || undefined,
+        type: request.query.type || undefined,
+        sort: request.query.sort || "az",
+    };
     const page = request.query.page || 0;
     const stadium_id = request.currentUser.get('stadium_id');
-    const events = await EventService.getEventsByStadiumId(stadium_id, dateFilter, page);
+    const events = await EventService.getEventsByStadiumId(stadium_id, filter, dateFilter, page);
     const eventCount = await EventService.countEventsByStadiumId(stadium_id);
 
     response.status(200);

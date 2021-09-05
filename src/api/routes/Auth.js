@@ -10,6 +10,7 @@ express.post('/loginAdmin', routeHandler(async (request, response) => {
     const comparison = user && await AuthService.comparePasscode(passcode.replace(/ /g, ''), user.passcode);
     if (comparison) {
         const token = await AuthService.getToken(user.id);
+        user.last_login = new Date(); user.save();
         response.status(200);
         response.json({user: UserRepo.toUser(user), token});
     } else {
@@ -24,6 +25,7 @@ express.get('/tokenLogin', routeHandler(async (request, response) => {
     const user = await UserRepo.getUserById(userId);
 
     if (user) {
+        user.last_login = new Date(); user.save();
         response.status(200);
         response.json({user: UserRepo.toUser(user)});
     } else {
