@@ -1,6 +1,4 @@
-const {teams} = require('../models');
-const {team_owners} = require('../models');
-const {team_owners_notes} = require('../models');
+const {teams, team_owners, team_owners_notes, geo_countries, geo_states, geo_cities} = require('../models');
 
 class TeamOwnerRepo {
 
@@ -10,16 +8,35 @@ class TeamOwnerRepo {
             name: team_owner.name,
             citizen_id: team_owner.citizen_id,
             phone: team_owner.phone,
-            country: team_owner.country,
-            state: team_owner.state,
-            city: team_owner.city,
+            country: team_owner.countries?.name,
+            state: team_owner.states?.name,
+            city: team_owner.cities?.name,
             teams: team_owner.teams || [],
             notes: team_owner.team_owners_notes || [],
         }
     }
 
     includeQuery() {
-        return [{model: teams}, {model: team_owners_notes}];
+        return [
+            {
+                model: teams
+            },
+            {
+                model: team_owners_notes
+            },
+            {
+                model: geo_countries,
+                as: 'countries'
+            },
+            {
+                model: geo_states,
+                as: 'states'
+            },
+            {
+                model: geo_cities,
+                as: 'cities'
+            }
+        ];
     }
 
     async getById(id) {

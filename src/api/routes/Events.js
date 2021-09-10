@@ -5,7 +5,6 @@ const multer  = require('multer');
 const upload = multer({ dest: 'public/uploads/' }).single('event');
 
 express.get('/getEvents', routeHandler(async (request, response) => {
-    const dateFilter = request.query.dateFilter;
     const filter = {
         search: request.query.search || "",
         country: request.query.country || undefined,
@@ -13,14 +12,23 @@ express.get('/getEvents', routeHandler(async (request, response) => {
         city: request.query.city || undefined,
         type: request.query.type || undefined,
         sort: request.query.sort || "az",
+        dateFilter: request.query.dateFilter,
     };
     const page = request.query.page || 0;
     const stadium_id = request.currentUser.get('stadium_id');
-    const events = await EventService.getEventsByStadiumId(stadium_id, filter, dateFilter, page);
+    const events = await EventService.getEventsByStadiumId(stadium_id, filter, page);
     const eventCount = await EventService.countEventsByStadiumId(stadium_id);
 
     response.status(200);
     response.json({events, eventCount});
+}));
+
+express.get('/removeEvent/:event_id', routeHandler(async (request, response) => {
+    const {event_id} = request.params;
+    await EventService.removeEvent(event_id);
+
+    response.status(200);
+    response.json({success:true});
 }));
 
 express.post('/upsertEvent', routeHandler(async (request, response) => {

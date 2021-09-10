@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
             receiving_time_start: DataTypes.STRING,
             receiving_time_end: DataTypes.STRING,
             first_race_time: DataTypes.STRING,
+            type: DataTypes.STRING,
             bronze: DataTypes.INTEGER,
             silver_one: DataTypes.INTEGER,
             silver_two: DataTypes.INTEGER,

@@ -11,9 +11,9 @@ class UserService {
 
     static async getUsers(filter = {}, page = 0) {
         let filterQuery = {};
-        if (filter.country) filterQuery.country = filter.country;
-        // if (filter.state) filterQuery.state = {state: filter.state};
-        if (filter.city) filterQuery.city = filter.city;
+        if (filter.country) filterQuery.country = +filter.country;
+        if (filter.state) filterQuery.state = +filter.state;
+        if (filter.city) filterQuery.city = +filter.city;
         // if (filter.membership) filterQuery.membership = filter.membership;
         if (filter.search) {
             filterQuery[Op.or] = {

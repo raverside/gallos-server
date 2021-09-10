@@ -11,8 +11,9 @@ module.exports = (sequelize, DataTypes) => {
             name: DataTypes.STRING,
             representative_name: DataTypes.STRING,
             phone: DataTypes.STRING,
-            country: DataTypes.STRING,
-            city: DataTypes.STRING,
+            country: DataTypes.INTEGER,
+            state: DataTypes.INTEGER,
+            city: DataTypes.INTEGER,
             image: DataTypes.STRING,
             logo: DataTypes.STRING,
             bio: DataTypes.STRING,
@@ -23,6 +24,9 @@ module.exports = (sequelize, DataTypes) => {
     stadiums.associate = (models) => {
         stadiums.hasMany(models.events);
         stadiums.hasMany(models.users);
+        stadiums.belongsTo(models.geo_countries, {as: 'countries', targetKey: "id", foreignKey: "country"});
+        stadiums.belongsTo(models.geo_states, {as: 'states', targetKey: "id", foreignKey: "state"});
+        stadiums.belongsTo(models.geo_cities, {as: 'cities', targetKey: "id", foreignKey: "city"});
     };
 
     return stadiums;

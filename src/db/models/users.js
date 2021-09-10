@@ -5,8 +5,9 @@ module.exports = (sequelize, DataTypes) => {
             id: { type: DataTypes.UUID, primaryKey: true, defaultValue: DataTypes.UUIDV4 },
             username: {type: DataTypes.STRING, unique: true},
             phone: DataTypes.STRING,
-            country: DataTypes.STRING,
-            city: DataTypes.STRING,
+            country: DataTypes.INTEGER,
+            state: DataTypes.INTEGER,
+            city: DataTypes.INTEGER,
             photo: DataTypes.STRING,
             passcode: DataTypes.STRING,
             birthday: DataTypes.DATE,
@@ -22,6 +23,9 @@ module.exports = (sequelize, DataTypes) => {
 
     users.associate = (models) => {
         users.belongsTo(models.stadiums);
+        users.belongsTo(models.geo_countries, {as: 'countries', targetKey: "id", foreignKey: "country"});
+        users.belongsTo(models.geo_states, {as: 'states', targetKey: "id", foreignKey: "state"});
+        users.belongsTo(models.geo_cities, {as: 'cities', targetKey: "id", foreignKey: "city"});
         users.hasMany(models.users_notes, {as: 'user_notes', sourceKey: "id", foreignKey: "user_id"});
         users.hasMany(models.users_notes, {as: 'creator_notes', sourceKey: "id", foreignKey: "creator_id"});
     };

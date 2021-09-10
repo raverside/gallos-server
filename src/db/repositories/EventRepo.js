@@ -17,6 +17,7 @@ class EventRepo {
             receiving_time_start: event.receiving_time_start,
             receiving_time_end: event.receiving_time_end,
             first_race_time: event.first_race_time,
+            type: event.type,
             bronze: event.bronze,
             silver_one: event.silver_one,
             silver_two: event.silver_two,
@@ -31,7 +32,7 @@ class EventRepo {
     async getEventsByStadiumId(stadium_id, filterQuery, page, order) {
         const limit = 5;
         const offset = limit * page;
-        return await events.findAll({where: {...{stadium_id}, ...filterQuery}, order, offset, limit, include: [stadiums]});
+        return await events.findAll({where: {...{stadium_id}, ...filterQuery}, order, limit, offset, include: [stadiums]});
     }
 
     async countEventsByStadiumId(stadium_id) {
@@ -49,6 +50,10 @@ class EventRepo {
         } else {
             return await events.create(event);
         }
+    }
+
+    async removeEvent(id) {
+        return await events.destroy({where: {id}});
     }
 
 }

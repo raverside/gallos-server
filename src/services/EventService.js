@@ -5,9 +5,9 @@ const Op = Sequelize.Op;
 
 class EventService {
 
-    static async getEventsByStadiumId(stadiumId, filter = {}, dateFilter = "today", page = 0) {
+    static async getEventsByStadiumId(stadiumId, filter = {}, page = 0) {
         let filterQuery = {};
-        switch (dateFilter){
+        switch (filter.dateFilter){
             case "today":
                 filterQuery = {event_date: new Date()};
             break;
@@ -19,7 +19,7 @@ class EventService {
                 break;
         }
         if (filter.country) filterQuery.country = filter.country;
-        if (filter.state) filterQuery.state = {state: filter.state};
+        if (filter.state) filterQuery.state = filter.state;
         if (filter.city) filterQuery.city = filter.city;
         if (filter.type) filterQuery.is_special = filter.type === "special";
         if (filter.search) {
@@ -27,7 +27,7 @@ class EventService {
                 title: {[Op.iLike]: '%'+filter.search+'%'},
             };
         }
-        const order = (filter.sort === "za") ? [['title', 'DESC']] : [['title', 'ASC']];
+        const order = (filter.sort === "za") ? [['id', 'DESC']] : [['id', 'ASC']];
         const events = await EventRepo.getEventsByStadiumId(stadiumId, filterQuery, page, order);
 
         return events.map(EventRepo.toEvent);
@@ -42,6 +42,10 @@ class EventService {
         newEvent.stadium = await StadiumRepo.getById(newEvent.stadium_id);
 
         return EventRepo.toEvent(newEvent);
+    }
+
+    static async removeEvent(event_id) {
+        return await EventRepo.removeEvent(event_id);
     }
 
 }

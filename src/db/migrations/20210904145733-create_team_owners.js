@@ -11,9 +11,18 @@ module.exports = {
       name: Sequelize.STRING,
       citizen_id: Sequelize.STRING,
       phone: Sequelize.STRING,
-      country: Sequelize.STRING,
-      state: Sequelize.STRING,
-      city: Sequelize.STRING,
+      country: {
+        type: Sequelize.INTEGER,
+        references: { model: 'geo_countries', key: 'id' }
+      },
+      state: {
+        type: Sequelize.INTEGER,
+        references: { model: 'geo_states', key: 'id' }
+      },
+      city: {
+        type: Sequelize.INTEGER,
+        references: { model: 'geo_cities', key: 'id' }
+      },
       created_at: {
         allowNull: false,
         type: Sequelize.DATE

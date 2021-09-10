@@ -1,6 +1,4 @@
-const {users} = require('../models');
-const {users_notes} = require('../models');
-const {stadiums} = require('../models');
+const {users, users_notes, stadiums, geo_countries, geo_states, geo_cities} = require('../models');
 const Sequelize = require('sequelize');
 
 class UserRepo {
@@ -10,8 +8,9 @@ class UserRepo {
             id: user.id,
             username: user.username,
             phone: user.phone,
-            country: user.country,
-            city: user.city,
+            country: user.countries?.name,
+            state: user.states?.name,
+            city: user.cities?.name,
             photo: user.photo,
             birthday: user.birthday,
             role: user.role,
@@ -24,7 +23,28 @@ class UserRepo {
     }
 
     includeQuery() {
-        return [{model: users_notes, as: 'user_notes', include: {model: users, as: 'creator'}}, {model: stadiums}];
+        return [
+            {
+                model: users_notes,
+                as: 'user_notes',
+                include: {model: users, as: 'creator'}
+            },
+            {
+                model: stadiums
+            },
+            {
+                model: geo_countries,
+                as: 'countries'
+            },
+            {
+                model: geo_states,
+                as: 'states'
+            },
+            {
+                model: geo_cities,
+                as: 'cities'
+            }
+        ];
     }
 
     async getUserById(id) {
