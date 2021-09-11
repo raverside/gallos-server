@@ -40,6 +40,7 @@ class EventRepo {
             today: await events.count({where: {stadium_id, event_date: new Date()}}),
             upcoming: await events.count({where: {stadium_id, event_date: {[Op.gt]: new Date()}}}),
             past: await events.count({where: {stadium_id, event_date: {[Op.lt]: new Date()}}}),
+            dates: await events.findAll({where: {stadium_id}, attributes: [[Sequelize.fn('DISTINCT', Sequelize.col('event_date')), 'date']]})
         }
     }
 

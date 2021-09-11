@@ -16,7 +16,12 @@ class EventService {
             break;
             case "past":
                 filterQuery = {event_date: {[Op.lt]: new Date()}};
-                break;
+            break;
+            default:
+                if (filter.dateFilter) {
+                    filterQuery = {event_date: new Date(filter.dateFilter)};
+                }
+            break;
         }
         if (filter.country) filterQuery.country = filter.country;
         if (filter.state) filterQuery.state = filter.state;
