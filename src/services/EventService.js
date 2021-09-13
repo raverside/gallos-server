@@ -5,6 +5,10 @@ const Op = Sequelize.Op;
 
 class EventService {
 
+    static async getEventById(id) {
+        return EventRepo.toEvent(await EventRepo.getById(id));
+    }
+
     static async getEventsByStadiumId(stadiumId, filter = {}, page = 0) {
         let filterQuery = {};
         switch (filter.dateFilter){
@@ -43,6 +47,7 @@ class EventService {
     }
 
     static async upsertEvent(event) {
+        event.type = event.type?.join(',');
         const newEvent = await EventRepo.upsertEvent(event);
         newEvent.stadium = await StadiumRepo.getById(newEvent.stadium_id);
 

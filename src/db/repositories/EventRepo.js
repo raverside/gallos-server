@@ -17,7 +17,7 @@ class EventRepo {
             receiving_time_start: event.receiving_time_start,
             receiving_time_end: event.receiving_time_end,
             first_race_time: event.first_race_time,
-            type: event.type,
+            type: event.type?.split(','),
             bronze: event.bronze,
             silver_one: event.silver_one,
             silver_two: event.silver_two,
@@ -27,6 +27,10 @@ class EventRepo {
             stadium_name: event.stadium.name,
             stadium_image: event.stadium.image
         }
+    }
+
+    async getById(id) {
+        return await events.findOne({where: {id}, include: [stadiums]});
     }
 
     async getEventsByStadiumId(stadium_id, filterQuery, page, order) {

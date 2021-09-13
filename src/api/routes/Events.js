@@ -4,6 +4,14 @@ const EventService = require('../../services/EventService');
 const multer  = require('multer');
 const upload = multer({ dest: 'public/uploads/' }).single('event');
 
+express.get('/getEvent/:id', routeHandler(async (request, response) => {
+    const {id} = request.params;
+    const event = await EventService.getEventById(id);
+
+    response.status(200);
+    response.json({event});
+}));
+
 express.get('/getEvents', routeHandler(async (request, response) => {
     const filter = {
         search: request.query.search || "",

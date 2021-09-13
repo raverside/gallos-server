@@ -7,6 +7,7 @@ class UserRepo {
         return {
             id: user.id,
             username: user.username,
+            passcode: user.passcode,
             phone: user.phone,
             country: user.countries?.name,
             state: user.states?.name,
@@ -51,8 +52,9 @@ class UserRepo {
         return await users.findOne({ where: {id}, include: this.includeQuery() });
     }
 
-    async getUserByUsername(username) {
+    async getUserByCredentials(username, passcode) {
         return await users.findOne({ where: {
+            passcode,
             $and: Sequelize.where(Sequelize.fn('lower', Sequelize.col('username')), Sequelize.fn('lower', username))
         }, include: this.includeQuery() });
     }

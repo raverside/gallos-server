@@ -1,5 +1,4 @@
 const UserRepo = require('../db/repositories/UserRepo');
-const AuthService = require('./AuthService');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
@@ -30,8 +29,7 @@ class UserService {
     static async updateUserProfile(id, phone, passcode) {
         const updatedValues = {phone};
         if (passcode) {
-            const cleanPasscode = passcode.toUpperCase().replace(/\s/g, '');
-            updatedValues.passcode = await AuthService.hashPasscode(cleanPasscode);
+            updatedValues.passcode  = passcode.toUpperCase().replace(/\s/g, '');
         }
 
         return await UserRepo.updateUser(id, updatedValues);

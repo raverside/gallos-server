@@ -5,10 +5,9 @@ const AuthService = require('../../services/AuthService');
 
 express.post('/loginAdmin', routeHandler(async (request, response) => {
     const {username, passcode} = request.body;
-    const user = await UserRepo.getUserByUsername(username);
+    const user = await UserRepo.getUserByCredentials(username, passcode.toUpperCase().replace(/\s/g, ''));
 
-    const comparison = user && await AuthService.comparePasscode(passcode.replace(/ /g, ''), user.passcode);
-    if (comparison) {
+    if (user) {
         const token = await AuthService.getToken(user.id);
         user.last_login = new Date(); user.save();
         response.status(200);
