@@ -38,6 +38,10 @@ class StadiumRepo {
         return await stadiums.findOne({where: {id}, include: this.includeQuery()});
     }
 
+    async getAllStadiums() {
+        return await stadiums.findAll();
+    }
+
     async getStadiums(filterQuery, page, order) {
         // const limit = 10;
         // const offset = limit * page;

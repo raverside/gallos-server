@@ -25,3 +25,10 @@ express.get('/getStadiums', routeHandler(async (request, response) => {
     response.status(200);
     response.json({stadiums});
 }));
+
+express.get('/getAllStadiums', routeHandler(async (request, response) => {
+    const stadiums = await StadiumService.getAllStadiums();
+
+    response.status(200);
+    response.json({stadiums});
+}));

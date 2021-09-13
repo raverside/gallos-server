@@ -40,7 +40,7 @@ express.get('/removeEvent/:event_id', routeHandler(async (request, response) => 
 }));
 
 express.post('/upsertEvent', routeHandler(async (request, response) => {
-    const stadium_id = request.currentUser.get('stadium_id');
+    const stadium_id = request.body.stadium_id || request.currentUser.get('stadium_id');
     const event = await EventService.upsertEvent({...request.body, stadium_id});
 
     response.status(200);

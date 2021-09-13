@@ -8,6 +8,12 @@ class StadiumService {
         return StadiumRepo.toStadium(await StadiumRepo.getById(id));
     }
 
+    static async getAllStadiums() {
+        const allStadiums = await StadiumRepo.getAllStadiums();
+
+        return allStadiums.map(StadiumRepo.toStadium);
+    }
+
     static async getStadiums(filter = {}, page = 0) {
         let filterQuery = {};
         if (filter.country) filterQuery.country = filter.country;
