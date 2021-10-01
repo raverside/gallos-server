@@ -1,5 +1,7 @@
 require('./Auth');
 require('./Events');
+require('./Participants');
+require('./Matchmaking');
 require('./Users');
 require('./Stadiums');
 require('./Memberships');

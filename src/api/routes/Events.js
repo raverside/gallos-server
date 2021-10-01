@@ -3,6 +3,7 @@ const routeHandler = require('../routeHandler');
 const EventService = require('../../services/EventService');
 const multer  = require('multer');
 const upload = multer({ dest: 'public/uploads/' }).single('event');
+const EventRepo = require('../../db/repositories/EventRepo');
 
 express.get('/getEvent/:id', routeHandler(async (request, response) => {
     const {id} = request.params;
@@ -59,4 +60,12 @@ express.post('/uploadEventPicture', routeHandler(async (request, response) => {
             response.status(500);
         }
     });
+}));
+
+express.get('/announceEvent/:event_id', routeHandler(async (request, response) => {
+    const {event_id} = request.params;
+    EventRepo.updateEvent({id: event_id, phase: "on going"});
+
+    response.status(200);
+    response.json({success:true});
 }));

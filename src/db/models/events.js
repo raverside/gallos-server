@@ -23,13 +23,16 @@ module.exports = (sequelize, DataTypes) => {
             silver_two: DataTypes.INTEGER,
             gold_one: DataTypes.INTEGER,
             gold_two: DataTypes.INTEGER,
-            stadium_id: DataTypes.UUID
+            stadium_id: DataTypes.UUID,
+            phase: DataTypes.STRING,
         },
         { underscored: true }
     );
 
     events.associate = (models) => {
         events.belongsTo(models.stadiums);
+        events.hasMany(models.participants);
+        events.hasMany(models.matches);
     };
 
     return events;

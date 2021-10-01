@@ -7,6 +7,10 @@ class TeamOwnerService {
         return TeamOwnerRepo.toTeamOwner(await TeamOwnerRepo.getById(id));
     }
 
+    static async getTeamOwnerByDigitalId(id) {
+        return TeamOwnerRepo.toTeamOwner(await TeamOwnerRepo.getByDigitalId(id));
+    }
+
     static async getTeamOwners() {
         const memberships = await TeamOwnerRepo.getTeamOwners();
 

@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
             country: DataTypes.INTEGER,
             state: DataTypes.INTEGER,
             city: DataTypes.INTEGER,
+            digital_id: DataTypes.INTEGER,
         },
         { underscored: true }
     );

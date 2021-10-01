@@ -10,6 +10,14 @@ express.get('/getTeamOwner/:id', routeHandler(async (request, response) => {
     response.json({team_owner});
 }));
 
+express.get('/getTeamOwnerByDigitalId/:id', routeHandler(async (request, response) => {
+    const {id} = request.params;
+    const team_owner = await TeamOwnerService.getTeamOwnerByDigitalId(id);
+
+    response.status(200);
+    response.json({team_owner});
+}));
+
 express.get('/getTeamOwners', routeHandler(async (request, response) => {
     const team_owners = await TeamOwnerService.getTeamOwners();
     const all_teams = await TeamOwnerService.getAllTeams();

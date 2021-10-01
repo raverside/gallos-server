@@ -13,6 +13,7 @@ class TeamOwnerRepo {
             city: team_owner.cities?.name,
             teams: team_owner.teams || [],
             notes: team_owner.team_owners_notes || [],
+            digital_id: team_owner.digital_id
         }
     }
 
@@ -41,6 +42,10 @@ class TeamOwnerRepo {
 
     async getById(id) {
         return await team_owners.findOne({where: {id}, include: this.includeQuery()});
+    }
+
+    async getByDigitalId(id) {
+        return await team_owners.findOne({where: {digital_id: id}, include: this.includeQuery()});
     }
 
     async getTeamOwners() {

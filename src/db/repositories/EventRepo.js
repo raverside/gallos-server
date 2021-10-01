@@ -1,5 +1,4 @@
-const {events} = require('../models');
-const {stadiums} = require('../models');
+const {events, stadiums, participants, teams, matches} = require('../models');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
@@ -18,6 +17,7 @@ class EventRepo {
             receiving_time_end: event.receiving_time_end,
             first_race_time: event.first_race_time,
             type: event.type?.split(','),
+            phase: event.phase,
             bronze: event.bronze,
             silver_one: event.silver_one,
             silver_two: event.silver_two,
@@ -25,18 +25,46 @@ class EventRepo {
             gold_two: event.gold_two,
             stadium_id: event.stadium_id,
             stadium_name: event.stadium.name,
-            stadium_image: event.stadium.image
+            stadium_image: event.stadium.image,
+            participants: event.participants,
+            matches: event.matches,
         }
     }
 
+    includeQuery() {
+        return [
+            {
+                model: stadiums
+            },
+            {
+                model: participants,
+                include: [teams]
+            },
+            {
+                model: matches,
+                include: [
+                    {
+                        model: participants,
+                        as: 'participant',
+                        include: [teams]
+                    },
+                    {
+                        model: participants,
+                        as: 'opponent',
+                        include: [teams]
+                    }
+                ],
+            }
+        ];
+    }
     async getById(id) {
-        return await events.findOne({where: {id}, include: [stadiums]});
+        return await events.findOne({where: {id}, include: this.includeQuery()});
     }
 
     async getEventsByStadiumId(stadium_id, filterQuery, page, order) {
         const limit = 5;
         const offset = limit * page;
-        return await events.findAll({where: {...{stadium_id}, ...filterQuery}, order, limit, offset, include: [stadiums]});
+        return await events.findAll({where: {...{stadium_id}, ...filterQuery}, order, limit, offset, include: this.includeQuery()});
     }
 
     async countEventsByStadiumId(stadium_id) {
@@ -55,6 +83,11 @@ class EventRepo {
         } else {
             return await events.create(event);
         }
+    }
+
+    async updateEvent(event) {
+        await events.update(event, {where: {id: event.id}});
+        return event;
     }
 
     async removeEvent(id) {
