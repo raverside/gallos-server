@@ -25,6 +25,8 @@ module.exports = (sequelize, DataTypes) => {
         team_owners.belongsTo(models.geo_cities, {as: 'cities', targetKey: "id", foreignKey: "city"});
         team_owners.hasMany(models.teams);
         team_owners.hasMany(models.team_owners_notes, {sourceKey: "id", foreignKey: "team_owner_id"});
+        team_owners.hasMany(models.mutual_liberty, {sourceKey: "id", foreignKey: "owner_id", as: 'owner_liberty'});
+        team_owners.hasMany(models.mutual_liberty, {sourceKey: "id", foreignKey: "opponent_id", as: 'opponent_liberty'});
     };
 
     return team_owners;

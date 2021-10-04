@@ -55,7 +55,7 @@ express.post(`/updateUserNote`, routeHandler(async (request, response) => {
     const user = await UserService.updateNote(note_id, noteTitle, note);
 
     response.status(200);
-    response.json({user});
+    response.json({user: user[1]});
 }));
 
 express.post(`/removeUserNote`, routeHandler(async (request, response) => {

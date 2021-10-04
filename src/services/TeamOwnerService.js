@@ -40,6 +40,18 @@ class TeamOwnerService {
     static async createTeam(id, team) {
         return await TeamOwnerRepo.createTeam(id, team);
     }
+
+    static async createLiberty(owner_id, reason, opponent_id, active) {
+        return TeamOwnerRepo.toTeamOwner(await TeamOwnerRepo.createLiberty(owner_id, reason, opponent_id, active));
+    }
+
+    static async updateLiberty(id, reason, opponent_id, active) {
+        return await TeamOwnerRepo.updateLiberty(id, reason, opponent_id, active);
+    }
+
+    static async removeLiberty(id) {
+        return await TeamOwnerRepo.removeLiberty(id);
+    }
 }
 
 module.exports = TeamOwnerService;

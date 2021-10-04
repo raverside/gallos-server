@@ -1,4 +1,4 @@
-const {teams, team_owners, team_owners_notes, geo_countries, geo_states, geo_cities} = require('../models');
+const {teams, team_owners, team_owners_notes, mutual_liberty, geo_countries, geo_states, geo_cities} = require('../models');
 
 class TeamOwnerRepo {
 
@@ -13,6 +13,7 @@ class TeamOwnerRepo {
             city: team_owner.cities?.name,
             teams: team_owner.teams || [],
             notes: team_owner.team_owners_notes || [],
+            liberty: team_owner.owner_liberty || [],
             digital_id: team_owner.digital_id
         }
     }
@@ -36,6 +37,13 @@ class TeamOwnerRepo {
             {
                 model: geo_cities,
                 as: 'cities'
+            },
+            {
+                model: mutual_liberty,
+                as: 'owner_liberty',
+                include: [
+                    {model: team_owners, as: 'opponent_liberty'}
+                ]
             }
         ];
     }
@@ -72,6 +80,19 @@ class TeamOwnerRepo {
 
     async removeNote(id) {
         return await team_owners_notes.destroy({where: {id}});
+    }
+
+    async createLiberty(owner_id, reason, opponent_id, active) {
+        const newLiberty = await mutual_liberty.create({owner_id, reason, opponent_id, active});
+        return await this.getById(newLiberty.owner_id);
+    }
+
+    async updateLiberty(id, reason, opponent_id, active) {
+        return await mutual_liberty.update({reason, opponent_id, active}, {where: {id}, returning:true});
+    }
+
+    async removeLiberty(id) {
+        return await mutual_liberty.destroy({where: {id}});
     }
 
     async createTeam(team_owner_id, name) {
