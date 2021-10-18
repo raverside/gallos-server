@@ -67,6 +67,10 @@ class EventRepo {
         return await events.findAll({where: {...{stadium_id}, ...filterQuery}, order, limit, offset, include: this.includeQuery()});
     }
 
+    async getOngoingEventsByStadiumId(stadium_id) {
+        return await events.findAll({where: {stadium_id, phase: "on going"}, include: this.includeQuery()});
+    }
+
     async countEventsByStadiumId(stadium_id) {
         return {
             today: await events.count({where: {stadium_id, event_date: new Date()}}),

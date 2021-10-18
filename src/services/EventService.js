@@ -42,6 +42,12 @@ class EventService {
         return events.map(EventRepo.toEvent);
     }
 
+    static async getOngoingEventsByStadiumId(stadiumId) {
+        const events = await EventRepo.getOngoingEventsByStadiumId(stadiumId);
+
+        return events.map(EventRepo.toEvent);
+    }
+
     static async countEventsByStadiumId(stadiumId) {
         return await EventRepo.countEventsByStadiumId(stadiumId);
     }
