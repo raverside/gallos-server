@@ -55,6 +55,10 @@ class MatchesRepo {
         return await matches.update({live: true}, {where: {id}});
     }
 
+    async updateMatch(id, match) {
+        return await matches.update(match, {where: {id}});
+    }
+
     async publishSpecial(guest_id) {
         //please make it work
         // return await matches.update({live: true}, {

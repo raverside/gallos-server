@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
             live: DataTypes.BOOLEAN,
             manual: DataTypes.BOOLEAN,
             event_id: DataTypes.UUID,
+            result: DataTypes.INTEGER
         },
         { underscored: true }
     );
