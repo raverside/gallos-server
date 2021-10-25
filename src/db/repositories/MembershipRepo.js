@@ -20,6 +20,19 @@ class MembershipRepo {
         return await memberships.findAll();
     }
 
+    async upsertMembership(membership) {
+        if (membership.id) {
+            await memberships.update(membership, {where: {id: membership.id}});
+            return membership;
+        } else {
+            return await memberships.create(membership);
+        }
+    }
+
+    async removeMembership(id) {
+        return await memberships.destroy({where: {id}});
+    }
+
 }
 
 module.exports = new MembershipRepo();

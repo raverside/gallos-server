@@ -11,6 +11,16 @@ class MembershipService {
 
         return memberships.map(MembershipRepo.toMembership);
     }
+
+    static async upsertMembership(membership) {
+        const newMembership = await MembershipRepo.upsertMembership(membership);
+
+        return MembershipRepo.toMembership(newMembership);
+    }
+
+    static async removeMembership(id) {
+        return await MembershipRepo.removeMembership(id);
+    }
 }
 
 module.exports = MembershipService;

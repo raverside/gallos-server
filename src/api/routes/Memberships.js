@@ -16,3 +16,18 @@ express.get('/getMemberships', routeHandler(async (request, response) => {
     response.status(200);
     response.json({memberships});
 }));
+
+express.post('/upsertMembership', routeHandler(async (request, response) => {
+    const membership = await MembershipService.upsertMembership({...request.body});
+
+    response.status(200);
+    response.json({success: true});
+}));
+
+express.get('/deleteMembership/:id', routeHandler(async (request, response) => {
+    const {id} = request.params;
+    await MembershipService.removeMembership(id);
+
+    response.status(200);
+    response.json({success: true});
+}));
