@@ -1,6 +1,6 @@
 module.exports = {
   "development": {
-    "username": process.env.DB_USERNAME,
+    "username": "postgres",
     "password": process.env.DB_PASSWORD || null,
     "database": process.env.DB_DATABASE,
     "host": process.env.DB_HOST,
