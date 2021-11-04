@@ -3,7 +3,7 @@ const path = require('path');
 var folder = './src/db';
 
 module.exports = {
-  'config': path.resolve(folder, 'config/config.json'),
+  'config': path.resolve(folder, 'config/config.js'),
   'migrations-path': path.resolve(folder, 'migrations'),
   'seeders-path': path.resolve(folder, 'seeders'),
   'models-path': path.resolve(folder, 'models')
