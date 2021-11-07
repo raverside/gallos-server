@@ -1,6 +1,4 @@
-const {geo_countries} = require('../models');
-const {geo_states} = require('../models');
-const {geo_cities} = require('../models');
+const {geo_countries, geo_states, geo_cities, stadiums} = require('../models');
 
 class GeoRepo {
 

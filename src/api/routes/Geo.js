@@ -27,7 +27,7 @@ express.get('/getCity/:id', routeHandler(async (request, response) => {
 }));
 
 express.get('/getCountries', routeHandler(async (request, response) => {
-    const {withStadium} = request.params;
+    const {withStadium} = request.query;
     const countries = await GeoService.getCountries(withStadium);
 
     response.status(200);
