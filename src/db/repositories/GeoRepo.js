@@ -39,11 +39,11 @@ class GeoRepo {
     }
 
     async getAllCountries() {
-        return await geo_countries.findAll();
+        return await geo_countries.findAll({order: [['name', 'DESC']]});
     }
 
     async getCountriesWithStadium() {
-        return await geo_countries.findAll({include: {model: stadiums, required: true}});
+        return await geo_countries.findAll({include: {model: stadiums, required: true}, order: [['name', 'DESC']]});
     }
 
     async getStateById(id) {
@@ -51,7 +51,7 @@ class GeoRepo {
     }
 
     async getStatesByCountry(country_id) {
-        return await geo_states.findAll({where: {country_id}});
+        return await geo_states.findAll({where: {country_id}, order: [['name', 'DESC']]});
     }
 
     async getCityById(id) {
@@ -59,7 +59,7 @@ class GeoRepo {
     }
 
     async getCitiesByState(state_id) {
-        return await geo_cities.findAll({where: {state_id}});
+        return await geo_cities.findAll({where: {state_id}, order: [['name', 'DESC']]});
     }
 
 }
