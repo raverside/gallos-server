@@ -42,6 +42,10 @@ class GeoRepo {
         return await geo_countries.findAll();
     }
 
+    async getCountriesWithStadium() {
+        return await geo_countries.findAll({include: {model: stadiums, required: true}});
+    }
+
     async getStateById(id) {
         return await geo_countries.findOne({where: {id}});
     }

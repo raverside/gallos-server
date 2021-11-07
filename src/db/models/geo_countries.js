@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     geo_countries.associate = (models) => {
         geo_countries.hasMany(models.geo_states, {sourceKey: "id", foreignKey: "country_id"});
         geo_countries.hasMany(models.geo_cities, {sourceKey: "id", foreignKey: "country_id"});
+        geo_countries.hasMany(models.stadiums, {sourceKey: "id", foreignKey: "country"});
     };
 
     return geo_countries;
