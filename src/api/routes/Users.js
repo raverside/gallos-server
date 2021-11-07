@@ -65,3 +65,10 @@ express.post(`/removeUserNote`, routeHandler(async (request, response) => {
     response.status(200);
     response.json({success: true});
 }));
+
+express.get('/getAllLabels', routeHandler(async (request, response) => {
+    const labels = await UserService.getAllLabels();
+
+    response.status(200);
+    response.json({labels: labels});
+}));

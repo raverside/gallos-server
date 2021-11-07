@@ -84,6 +84,15 @@ class UserRepo {
     async removeNote(id) {
         return await users_notes.destroy({where: {id}});
     }
+
+    async getAllLabels() {
+        return await users.findAll({
+            attributes: [
+                [Sequelize.fn('DISTINCT', Sequelize.col('labels')) ,'labels'],
+            ],
+            group: ["labels"],
+        });
+    }
 }
 
 module.exports = new UserRepo();

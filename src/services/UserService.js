@@ -54,6 +54,17 @@ class UserService {
     static async removeNote(id) {
         return await UserRepo.removeNote(id);
     }
+
+    static async getAllLabels() {
+        const allLabels = await UserRepo.getAllLabels();
+        const allLabelsFormatted =
+                                    allLabels
+                                        .map((label) => label.labels !== "" ? label.labels.split(',') : false)
+                                        .flat()
+                                        .filter((v, i, a) => a.indexOf(v) === i) // remove duplicates from the array
+                                        .filter(l=>!!l); // remove false from the array
+        return allLabelsFormatted;
+    }
 }
 
 module.exports = UserService;
