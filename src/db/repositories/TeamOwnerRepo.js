@@ -2,6 +2,10 @@ const {teams, team_owners, team_owners_notes, mutual_liberty, geo_countries, geo
 
 class TeamOwnerRepo {
 
+    constructor() {
+        this.preventLoop = 0;
+    }
+
     toTeamOwner(team_owner) {
         return {
             id: team_owner.id,
@@ -96,7 +100,15 @@ class TeamOwnerRepo {
     }
 
     async createTeam(team_owner_id, name) {
-        return await teams.create({team_owner_id, name});
+        const digital_id = (Math.random() * (999999 - 100000 + 1) ) << 0;
+        try {
+            const response = await teams.create({team_owner_id, name, digital_id})
+            if (response) this.preventLoop = 0;
+            return response;
+        } catch (err) {
+            this.preventLoop++;
+            if (err.errors[0].validatorKey === 'not_unique' && this.preventLoop <= 20) return await this.createTeam(team_owner_id, name);
+        }
     }
 
 }
