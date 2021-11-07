@@ -69,7 +69,13 @@ class TeamOwnerRepo {
             await team_owners.update(teamOwner, {where: {id: teamOwner.id}});
             return teamOwner;
         } else {
-            return await team_owners.create(teamOwner);
+            const digital_id = (Math.random() * (9999999 - 1000000 + 1) ) << 0;
+            try {
+                return await team_owners.create({...teamOwner, digital_id});
+            } catch (err) {
+                this.preventLoop++;
+                if (err.errors[0].validatorKey === 'not_unique' && this.preventLoop <= 20) return await this.upsertTeamOwner(teamOwner);
+            }
         }
     }
 
@@ -100,7 +106,7 @@ class TeamOwnerRepo {
     }
 
     async createTeam(team_owner_id, name) {
-        const digital_id = (Math.random() * (999999 - 100000 + 1) ) << 0;
+        const digital_id = (Math.random() * (9999999 - 1000000 + 1) ) << 0;
         try {
             const response = await teams.create({team_owner_id, name, digital_id})
             if (response) this.preventLoop = 0;
