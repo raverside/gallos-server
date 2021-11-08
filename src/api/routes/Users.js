@@ -72,3 +72,18 @@ express.get('/getAllLabels', routeHandler(async (request, response) => {
     response.status(200);
     response.json({labels: labels});
 }));
+
+express.post('/upsertUserLabel', routeHandler(async (request, response) => {
+    const label = await UserService.upsertLabel(request.body);
+
+    response.status(200);
+    response.json({label});
+}));
+
+express.get('/deleteUserLabel/:id', routeHandler(async (request, response) => {
+    const {id} = request.params;
+    const resp = await UserService.deleteLabel(id);
+
+    response.status(200);
+    response.json({success: true});
+}));

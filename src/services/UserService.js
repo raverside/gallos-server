@@ -56,14 +56,15 @@ class UserService {
     }
 
     static async getAllLabels() {
-        const allLabels = await UserRepo.getAllLabels();
-        const allLabelsFormatted =
-                                    allLabels
-                                        .map((label) => label.labels !== "" ? label.labels.split(',') : false)
-                                        .flat()
-                                        .filter((v, i, a) => a.indexOf(v) === i) // remove duplicates from the array
-                                        .filter(l=>!!l); // remove false from the array
-        return allLabelsFormatted;
+        return await UserRepo.getAllLabels();
+    }
+
+    static async upsertLabel(label) {
+        return await UserRepo.upsertLabel(label);
+    }
+
+    static async deleteLabel(id) {
+        return await UserRepo.deleteLabel(id);
     }
 }
 

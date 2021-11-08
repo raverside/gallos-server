@@ -1,4 +1,4 @@
-const {users, users_notes, stadiums, geo_countries, geo_states, geo_cities} = require('../models');
+const {users, users_notes, stadiums, geo_countries, geo_states, geo_cities, users_labels} = require('../models');
 const Sequelize = require('sequelize');
 
 class UserRepo {
@@ -86,12 +86,20 @@ class UserRepo {
     }
 
     async getAllLabels() {
-        return await users.findAll({
-            attributes: [
-                [Sequelize.fn('DISTINCT', Sequelize.col('labels')) ,'labels'],
-            ],
-            group: ["labels"],
-        });
+        return await users_labels.findAll();
+    }
+
+    async upsertLabel(label) {
+        if (label.id) {
+            await users_labels.update(label, {where: {id: label.id}});
+            return label;
+        } else {
+            return await users_labels.create(label);
+        }
+    }
+
+    async deleteLabel(id) {
+        return await users_labels.destroy({where: {id}});
     }
 }
 
