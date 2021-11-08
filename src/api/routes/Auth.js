@@ -4,8 +4,8 @@ const UserRepo = require('../../db/repositories/UserRepo');
 const AuthService = require('../../services/AuthService');
 
 express.post('/loginAdmin', routeHandler(async (request, response) => {
-    const {username, passcode} = request.body;
-    const user = await UserRepo.getUserByCredentials(username, passcode.toUpperCase().replace(/\s/g, ''));
+    const {phone, passcode} = request.body;
+    const user = await UserRepo.getUserByCredentials(phone, passcode.toUpperCase().replace(/\s/g, ''));
 
     if (user) {
         const token = await AuthService.getToken(user.id);
