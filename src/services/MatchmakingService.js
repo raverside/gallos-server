@@ -24,9 +24,9 @@ class MatchmakingService {
                    if (opponent.betting_pref !== participant.betting_pref && !opponent.betting_pref.includes(participant.betting_pref) && !participant.betting_pref.includes(opponent.betting_pref)) return false;
                    if (!(participant.weight === opponent.weight)
                         && !(participant.participated_before || opponent.participated_before)
-                        && !(participant.weight <= 3.79 && (opponent.weight >= participant.weight-0.5 || opponent.weight <= participant.weight+0.5))
-                        && !(participant.weight <= 4.03 && participant.weight >= 3.8 && (opponent.weight >= participant.weight-1 || opponent.weight <= participant.weight+1))
-                        && !(participant.weight >= 4.04 && (opponent.weight >= participant.weight-2 || opponent.weight <= participant.weight+2))) return false;
+                        && !(participant.weight <= 60.64 && (opponent.weight >= participant.weight-0.5 || opponent.weight <= participant.weight+0.5))
+                        && !(participant.weight <= 64.48 && participant.weight >= 60.65 && (opponent.weight >= participant.weight-1 || opponent.weight <= participant.weight+1))
+                        && !(participant.weight >= 64.48 && (opponent.weight >= participant.weight-2 || opponent.weight <= participant.weight+2))) return false;
 
                    return true;
                 });
