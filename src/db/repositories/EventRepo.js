@@ -1,4 +1,4 @@
-const {events, stadiums, participants, teams, matches} = require('../models');
+const {events, stadiums, participants, teams, matches, team_owners} = require('../models');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
@@ -38,7 +38,10 @@ class EventRepo {
             },
             {
                 model: participants,
-                include: [teams]
+                include: {
+                    model: teams,
+                    include: [team_owners]
+                }
             },
             {
                 model: matches,
@@ -46,12 +49,18 @@ class EventRepo {
                     {
                         model: participants,
                         as: 'participant',
-                        include: [teams]
+                        include: {
+                            model: teams,
+                            include: [team_owners]
+                        }
                     },
                     {
                         model: participants,
                         as: 'opponent',
-                        include: [teams]
+                        include: {
+                            model: teams,
+                            include: [team_owners]
+                        }
                     }
                 ],
             }
