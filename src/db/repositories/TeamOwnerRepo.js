@@ -7,6 +7,7 @@ class TeamOwnerRepo {
     }
 
     toTeamOwner(team_owner) {
+        if (!team_owner) return false;
         return {
             id: team_owner.id,
             name: team_owner.name,
