@@ -9,6 +9,12 @@ class ParticipantService {
         return ParticipantRepo.toParticipant(newParticipant);
     }
 
+    static async findParticipantByPayload(payload) {
+        const participant = await ParticipantRepo.findParticipantByPayload(payload);
+
+        return participant ? ParticipantRepo.toParticipant(participant) : false;
+    }
+
 }
 
 module.exports = ParticipantService;

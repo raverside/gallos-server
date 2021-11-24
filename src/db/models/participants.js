@@ -17,7 +17,8 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             event_id: DataTypes.UUID,
             team_id: DataTypes.UUID,
-            stadium_id: DataTypes.UUID,
+            stadium_id: DataTypes.TEXT,
+            stadium_name: DataTypes.STRING,
             color: DataTypes.STRING,
             cresta: DataTypes.STRING,
             alas: DataTypes.STRING,
@@ -35,7 +36,6 @@ module.exports = (sequelize, DataTypes) => {
 
     participants.associate = (models) => {
         participants.belongsTo(models.events);
-        participants.belongsTo(models.stadiums);
         participants.belongsTo(models.teams);
         participants.hasMany(models.matches, {as: 'participant', sourceKey: "id", foreignKey: "participant_id"});
         participants.hasMany(models.matches, {as: 'opponent', sourceKey: "id", foreignKey: "opponent_id"});

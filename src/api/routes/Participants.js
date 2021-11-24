@@ -25,3 +25,11 @@ express.post('/uploadParticipantPicture', routeHandler(async (request, response)
         }
     });
 }));
+
+express.post('/findParticipantByStadiumData', routeHandler(async (request, response) => {
+    const {stadium_id, stadium_name} = request.body;
+    const participant = await ParticipantService.findParticipantByPayload({stadium_id, stadium_name});
+
+    response.status(200);
+    response.json({participant});
+}));

@@ -12,6 +12,7 @@ class ParticipantRepo {
             team_id: participant.team_id,
             event_id: participant.event_id,
             stadium_id: participant.stadium_id,
+            stadium_name: participant.stadium_name,
             betting_pref: participant.betting_pref,
             betting_amount: participant.betting_amount,
             owner_account_number: participant.owner_account_number,
@@ -47,6 +48,9 @@ class ParticipantRepo {
         }
     }
 
+    async findParticipantByPayload(payload) {
+        return await participants.findOne({where: payload});
+    }
 }
 
 module.exports = new ParticipantRepo();
