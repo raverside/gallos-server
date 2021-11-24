@@ -30,10 +30,10 @@ express.get('/getTeamOwners', routeHandler(async (request, response) => {
 }));
 
 express.post('/upsertTeamOwner', routeHandler(async (request, response) => {
-    await TeamOwnerService.upsertTeamOwner(request.body);
+    const team_owner = await TeamOwnerService.upsertTeamOwner(request.body);
 
     response.status(200);
-    response.json({success: true});
+    response.json({success: true, team_owner});
 }));
 
 express.post(`/addTeamOwnerTeam`, routeHandler(async (request, response) => {
