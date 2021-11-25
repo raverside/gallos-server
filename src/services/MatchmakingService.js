@@ -23,7 +23,7 @@ class MatchmakingService {
                    if (opponent.physical_advantage !== participant.physical_advantage) return false;
                    if (opponent.betting_pref !== participant.betting_pref && !opponent.betting_pref.includes(participant.betting_pref) && !participant.betting_pref.includes(opponent.betting_pref)) return false;
                    if (+participant.weight !== +opponent.weight) {
-                       if ((!participant.participated_before && !opponent.participated_before)) {
+                       if ((participant.participated_before !== opponent.participated_before)) {
                            if (!(participant.weight <= 60.64 && (opponent.weight >= participant.weight-0.5 && opponent.weight <= participant.weight+0.5))
                                && !(participant.weight <= 64.48 && participant.weight >= 60.65 && (opponent.weight >= participant.weight-1 && opponent.weight <= participant.weight+1))
                                && !(participant.weight >= 64.48 && (opponent.weight >= participant.weight-2 && opponent.weight <= participant.weight+2))) {
