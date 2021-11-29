@@ -26,6 +26,7 @@ class EventRepo {
             stadium_id: event.stadium_id,
             stadium_name: event.stadium.name,
             stadium_image: event.stadium.image,
+            stadium_five_sec: event.stadium.five_sec,
             participants: event.participants,
             matches: event.matches,
         }
@@ -67,17 +68,17 @@ class EventRepo {
         ];
     }
     async getById(id) {
-        return await events.findOne({where: {id}, include: this.includeQuery()});
+        return await events.findOne({where: {id}, include: this.includeQuery(), order: [[{model: matches}, 'created_at', 'DESC'], [{model: matches}, 'id', 'DESC']]});
     }
 
-    async getEventsByStadiumId(stadium_id, filterQuery, page, order) {
+    async getEventsByStadiumId(stadium_id, filterQuery, page, order = [[{model: matches}, 'created_at', 'DESC'], [{model: matches}, 'id', 'DESC']]) {
         const limit = 5;
         const offset = limit * page;
         return await events.findAll({where: {...{stadium_id}, ...filterQuery}, order, limit, offset, include: this.includeQuery()});
     }
 
     async getOngoingEventsByStadiumId(stadium_id) {
-        return await events.findAll({where: {stadium_id, phase: "on going"}, include: this.includeQuery()});
+        return await events.findAll({where: {stadium_id, phase: "on going"}, include: this.includeQuery(), order: [[{model: matches}, 'created_at', 'DESC'], [{model: matches}, 'id', 'DESC']]});
     }
 
     async countEventsByStadiumId(stadium_id) {

@@ -53,3 +53,11 @@ express.post('/createMatch', routeHandler(async (request, response) => {
     response.status(200);
     response.json({success: true});
 }));
+
+express.get('/deleteMatch/:match_id', routeHandler(async (request, response) => {
+    const {match_id} = request.params;
+    await MatchmakingService.deleteMatch(match_id);
+
+    response.status(200);
+    response.json({success: true});
+}))

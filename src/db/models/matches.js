@@ -13,7 +13,9 @@ module.exports = (sequelize, DataTypes) => {
             live: DataTypes.BOOLEAN,
             manual: DataTypes.BOOLEAN,
             event_id: DataTypes.UUID,
-            result: DataTypes.INTEGER
+            result: DataTypes.INTEGER,
+            created_at: DataTypes.DATE,
+            updated_at: DataTypes.DATE
         },
         { underscored: true }
     );

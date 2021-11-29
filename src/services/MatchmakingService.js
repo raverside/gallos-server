@@ -85,6 +85,10 @@ class MatchmakingService {
         MatchesRepo.createMatch(match);
     }
 
+    static async deleteMatch(match_id) {
+        MatchesRepo.deleteMatch(match_id);
+    }
+
 }
 
 module.exports = MatchmakingService;

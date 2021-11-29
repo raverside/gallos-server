@@ -68,6 +68,10 @@ class MatchesRepo {
         //     ]
         // });
     }
+
+    async deleteMatch(id) {
+        return await matches.destroy({where: {id}});
+    }
 }
 
 module.exports = new MatchesRepo();

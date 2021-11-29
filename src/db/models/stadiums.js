@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
             image: DataTypes.STRING,
             logo: DataTypes.STRING,
             bio: DataTypes.STRING,
+            five_sec: DataTypes.BOOLEAN,
         },
         { underscored: true }
     );
