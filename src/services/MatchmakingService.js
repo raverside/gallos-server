@@ -27,9 +27,9 @@ class MatchmakingService {
                            || (+participant.weight > +opponent.weight && !participant.participated_before)
                            || (+participant.weight < +opponent.weight && !opponent.participated_before)
                        ) {
-                           if (!(participant.weight <= 60.64 && (opponent.weight >= participant.weight-0.5 && opponent.weight <= participant.weight+0.5))
-                               && !(participant.weight <= 64.48 && participant.weight >= 60.65 && (opponent.weight >= participant.weight-1 && opponent.weight <= participant.weight+1))
-                               && !(participant.weight >= 64.48 && (opponent.weight >= participant.weight-2 && opponent.weight <= participant.weight+2))) {
+                           if (!(participant.weight <= 55.9 && (opponent.weight >= participant.weight-0.5 && opponent.weight <= participant.weight+0.5))
+                               && !(participant.weight <= 64.3 && participant.weight > 55.9 && (opponent.weight >= participant.weight-1 && opponent.weight <= participant.weight+1))
+                               && !(participant.weight > 64.3 && (opponent.weight >= participant.weight-2 && opponent.weight <= participant.weight+2))) {
                                return false;
                            }
                        } else {
