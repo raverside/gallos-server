@@ -52,11 +52,19 @@ class UserRepo {
         return await users.findOne({ where: {id}, include: this.includeQuery() });
     }
 
+    async createUser(user) {
+        return await users.create(user);
+    }
+
     async getUserByCredentials(phone, passcode) {
         return await users.findOne({ where: {
             passcode,
             phone
         }, include: this.includeQuery() });
+    }
+
+    async getUserByPhone(phone) {
+        return await users.findOne({ where: {phone}});
     }
 
     async getUsers(filterQuery, page, order) {
