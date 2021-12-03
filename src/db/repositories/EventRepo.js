@@ -74,19 +74,26 @@ class EventRepo {
     async getEventsByStadiumId(stadium_id, filterQuery, page, order = [[{model: matches}, 'created_at', 'DESC'], [{model: matches}, 'id', 'DESC']]) {
         const limit = 5;
         const offset = limit * page;
-        return await events.findAll({where: {...{stadium_id}, ...filterQuery}, order, limit, offset, include: this.includeQuery()});
+        const where = stadium_id ? {...{stadium_id}, ...filterQuery} : filterQuery;
+        return await events.findAll({where, order, limit, offset, include: this.includeQuery()});
     }
 
     async getOngoingEventsByStadiumId(stadium_id) {
-        return await events.findAll({where: {stadium_id, phase: "on going"}, include: this.includeQuery(), order: [[{model: matches}, 'created_at', 'DESC'], [{model: matches}, 'id', 'DESC']]});
+        const where = stadium_id ? {stadium_id, phase: "on going"} : {phase: "on going"};
+        return await events.findAll({where, include: this.includeQuery(), order: [[{model: matches}, 'created_at', 'DESC'], [{model: matches}, 'id', 'DESC']]});
     }
 
     async countEventsByStadiumId(stadium_id) {
+        const whereToday = stadium_id ? {stadium_id, event_date: new Date()} : {event_date: new Date()};
+        const whereUpcoming = stadium_id ? {stadium_id, event_date: {[Op.gt]: new Date()}} : {event_date: {[Op.gt]: new Date()}};
+        const wherePast = stadium_id ? {stadium_id, event_date: {[Op.lt]: new Date()}} : { event_date: {[Op.lt]: new Date()}};
+        const whereDates = stadium_id ? {where: {stadium_id}, attributes: [[Sequelize.fn('DISTINCT', Sequelize.col('event_date')), 'date']]} : {attributes: [[Sequelize.fn('DISTINCT', Sequelize.col('event_date')), 'date']]};
+
         return {
-            today: await events.count({where: {stadium_id, event_date: new Date()}}),
-            upcoming: await events.count({where: {stadium_id, event_date: {[Op.gt]: new Date()}}}),
-            past: await events.count({where: {stadium_id, event_date: {[Op.lt]: new Date()}}}),
-            dates: await events.findAll({where: {stadium_id}, attributes: [[Sequelize.fn('DISTINCT', Sequelize.col('event_date')), 'date']]})
+            today: await events.count({where: whereToday}),
+            upcoming: await events.count({where: whereUpcoming}),
+            past: await events.count({where: wherePast}),
+            dates: await events.findAll(whereDates)
         }
     }
 
