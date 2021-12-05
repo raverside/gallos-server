@@ -39,7 +39,7 @@ class StadiumRepo {
     }
 
     async getAllStadiums() {
-        return await stadiums.findAll();
+        return await stadiums.findAll({include: this.includeQuery()});
     }
 
     async getStadiums(filterQuery, page, order) {

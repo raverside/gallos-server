@@ -35,6 +35,13 @@ class UserService {
         return await UserRepo.updateUser(id, updatedValues);
     }
 
+    static async updateCurrentUser({id, photo, ...payload}) {
+        if (photo) payload.photo = photo;
+        await UserRepo.updateUser(id, payload)
+
+        return UserRepo.toUser(await UserRepo.getUserById(id));
+    }
+
     static async updateUserLabels(id, labels) {
         const user = await UserRepo.getUserById(id);
         user.labels = labels;

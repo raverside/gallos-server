@@ -64,6 +64,16 @@ class EventService {
         return await EventRepo.removeEvent(event_id);
     }
 
+    static async getFastestMatchesByStadium(stadium_id) {
+        const events = await EventRepo.getFastestMatchesByStadium(stadium_id);
+        return events.reduce((result, e) => {
+            e.matches = e.matches.filter(em => em.result !== null);
+            if (e.matches.length > 0) {
+                result.push(EventRepo.toEvent(e));
+            }
+            return result;
+        }, []);
+    }
 }
 
 module.exports = EventService;

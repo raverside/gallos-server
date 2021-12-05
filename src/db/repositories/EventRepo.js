@@ -115,6 +115,10 @@ class EventRepo {
         return await events.destroy({where: {id}});
     }
 
+    async getFastestMatchesByStadium(stadium_id) {
+        return await events.findAll({where: {stadium_id}, order: [[{model: matches}, 'match_time', 'DESC']], limit: 10, include: this.includeQuery()});
+    }
+
 }
 
 module.exports = new EventRepo();

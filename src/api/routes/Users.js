@@ -1,6 +1,8 @@
 const express = require('../express');
 const routeHandler = require('../routeHandler');
 const UserService = require('../../services/UserService');
+const multer  = require('multer');
+const upload = multer({ dest: 'public/uploads/' }).single('user');
 
 express.get('/getUser/:id', routeHandler(async (request, response) => {
     const {id} = request.params;
@@ -86,4 +88,27 @@ express.get('/deleteUserLabel/:id', routeHandler(async (request, response) => {
 
     response.status(200);
     response.json({success: true});
+}));
+
+express.post('/uploadUserPicture', routeHandler(async (request, response) => {
+    upload(request, response, function (err) {
+        if (request.file?.filename) {
+            response.status(200);
+            response.json({filename: request.file.filename});
+        } else if (err) {
+            console.log(err);
+            response.status(500);
+        } else {
+            response.status(500);
+        }
+    });
+}));
+
+express.post(`/updateCurrentUser`, routeHandler(async (request, response) => {
+    const id = request.currentUser.id;
+    const {username, birthday, photo, country, state, city} = request.body;
+    const user = await UserService.updateCurrentUser({id, username, birthday, photo, country, state, city});
+
+    response.status(200);
+    response.json({user});
 }));

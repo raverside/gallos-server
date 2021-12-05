@@ -21,8 +21,8 @@ express.get('/cancelMatch/:match_id', routeHandler(async (request, response) => 
 
 express.post('/announceMatchResult/:match_id', routeHandler(async (request, response) => {
     const {match_id} = request.params;
-    const {result} = request.body;
-    MatchesRepo.updateMatch(match_id, {live: false, result});
+    const {result, match_time} = request.body;
+    MatchesRepo.updateMatch(match_id, {live: false, result, match_time});
 
     response.status(200);
     response.json({success: true});

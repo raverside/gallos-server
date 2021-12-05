@@ -4,6 +4,7 @@ const EventService = require('../../services/EventService');
 const multer  = require('multer');
 const upload = multer({ dest: 'public/uploads/' }).single('event');
 const EventRepo = require('../../db/repositories/EventRepo');
+const {sequelize} = require('../../db/models');
 
 express.get('/getEvent/:id', routeHandler(async (request, response) => {
     const {id} = request.params;
@@ -68,4 +69,43 @@ express.get('/announceEvent/:event_id', routeHandler(async (request, response) =
 
     response.status(200);
     response.json({success:true});
+}));
+
+express.post('/statistics/:stadium_id/:type', routeHandler(async (request, response) => {
+    const {type, stadium_id} = request.params;
+    const {dateFilter} = request.body;
+    let filterByDate = "";
+    if (type === "totm" && dateFilter?.start && dateFilter?.end) {
+        filterByDate = ` AND events.event_date between '${dateFilter.start}' and '${dateFilter.end}'`;
+    }
+    switch(type) {
+        case "average":
+        case "totm":
+        case "twmw":
+            const average = await sequelize.query(`SELECT`
+                +` teams.name,`
+                +` sum(case when (matches.result = 0 and matches.participant_id = participants.id) or (matches.result = 1 and matches.opponent_id = participants.id) then 1 else 0 end) wins,`
+                +` sum(case when (matches.result = 0 and matches.participant_id != participants.id) or (matches.result = 1 and matches.opponent_id != participants.id) then 1 else 0 end) loses`
+                +` FROM participants`
+                +` JOIN events ON events.id = participants.event_id`
+                +` JOIN matches ON (matches.participant_id = participants.id OR matches.opponent_id = participants.id)`
+                +` JOIN teams ON teams.id = participants.team_id`
+                +` WHERE events.stadium_id = '${stadium_id}'`
+                +` AND matches.result IS NOT NULL`
+                +  filterByDate
+                +` GROUP BY participants.team_id, teams.name`
+                +` ORDER BY wins DESC, loses ASC, teams.name`
+            );
+            response.status(200);
+            response.json({statistics: average[0]});
+            break;
+        case "fastest":
+            const fastest = await EventService.getFastestMatchesByStadium(stadium_id);
+            response.status(200);
+            response.json({statistics: fastest});
+        break;
+        default:
+            response.status(500);
+            response.json({error: "unknown_type"});
+    }
 }));
