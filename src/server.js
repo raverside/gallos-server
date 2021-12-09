@@ -6,7 +6,7 @@ function startServer() {
         console.log(`Running on port ${process.env.PORT} with ${process.env.NODE_ENV} environment`);
     });
 
-    const io = new Server(server, { cors: { origin: '*' } });
+    const io = new Server(server, { path: process.env.WEBSOCKET_PATH, cors: { origin: '*' } });
 
     io.on("connection", (socket) => {
         socket.on('updateEvents', () => {
