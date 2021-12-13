@@ -1,6 +1,8 @@
 const express = require('../express');
 const routeHandler = require('../routeHandler');
 const StadiumService = require('../../services/StadiumService');
+const multer  = require('multer');
+const upload = multer({ dest: 'public/uploads/' }).single('stadium');
 
 express.get('/getStadium/:id', routeHandler(async (request, response) => {
     const {id} = request.params;
@@ -31,4 +33,25 @@ express.get('/getAllStadiums', routeHandler(async (request, response) => {
 
     response.status(200);
     response.json({stadiums});
+}));
+
+express.post('/upsertStadium', routeHandler(async (request, response) => {
+    const stadium = await StadiumService.upsertStadium(request.body);
+
+    response.status(200);
+    response.json({stadium});
+}));
+
+express.post('/uploadStadiumPicture', routeHandler(async (request, response) => {
+    upload(request, response, function (err) {
+        if (request.file?.filename) {
+            response.status(200);
+            response.json({filename: request.file.filename});
+        } else if (err) {
+            console.log(err);
+            response.status(500);
+        } else {
+            response.status(500);
+        }
+    });
 }));

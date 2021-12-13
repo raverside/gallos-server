@@ -30,6 +30,12 @@ class StadiumService {
 
         return stadiums.map(StadiumRepo.toStadium);
     }
+
+    static async upsertStadium(payload) {
+        const newStadium = await StadiumRepo.upsertStadium(payload);
+
+        return StadiumRepo.toStadium(newStadium);
+    }
 }
 
 module.exports = StadiumService;

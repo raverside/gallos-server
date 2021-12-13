@@ -18,10 +18,10 @@ class MatchmakingService {
                 if (matches.find(x => x.participant_id === participant.id || x.opponent_id === participant.id)) return false;
                 const match = participants.find((opponent) => {
                    if (matches.find(x => x.participant_id === opponent.id || x.opponent_id === opponent.id)) return false;
-                   if (opponent.id === participant.id) return false;
+                   if (opponent.id === participant.id || opponent.team_id === participant.team_id) return false;
                    if (opponent.type !== participant.type) return false;
                    if (opponent.physical_advantage !== participant.physical_advantage) return false;
-                   if (opponent.betting_pref !== participant.betting_pref && !opponent.betting_pref.includes(participant.betting_pref) && !participant.betting_pref.includes(opponent.betting_pref)) return false;
+                   if (opponent.betting_pref !== participant.betting_pref && participant.betting_pref !== "open" && opponent.betting_pref !== "open" && !opponent.betting_pref.includes(participant.betting_pref) && !participant.betting_pref.includes(opponent.betting_pref)) return false;
                    if (+participant.weight !== +opponent.weight) {
                        if (participant.participated_before === opponent.participated_before
                            || (+participant.weight > +opponent.weight && !participant.participated_before)
