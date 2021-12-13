@@ -1,5 +1,4 @@
 const TeamOwnerRepo = require('../db/repositories/TeamOwnerRepo');
-const {teams} = require('../db/models');
 
 class TeamOwnerService {
 
@@ -14,7 +13,7 @@ class TeamOwnerService {
     static async getTeamOwners() {
         const memberships = await TeamOwnerRepo.getTeamOwners();
 
-        return memberships.map(TeamOwnerRepo.toTeamOwner);
+        return memberships.map((to) => TeamOwnerRepo.toTeamOwner(to));
     }
 
     static async upsertTeamOwner(teamOwner) {
@@ -34,7 +33,9 @@ class TeamOwnerService {
     }
 
     static async getAllTeams() {
-        return await teams.findAll();
+        const teams = await TeamOwnerRepo.getAllTeams();
+console.log(teams);
+        return teams.map((t) => TeamOwnerRepo.toTeam(t, t.team_owner));
     }
 
     static async createTeam(id, team) {

@@ -6,8 +6,22 @@ class TeamOwnerRepo {
         this.preventLoop = 0;
     }
 
+    toTeam(team, team_owner = false) {
+        if (!team) return false;
+        return {
+            id: team.id,
+            name: team.name,
+            wins: team.wins,
+            loses: team.loses,
+            draws: team.draws,
+            team_owner_id: team.team_owner_id,
+            digital_id: team_owner ? team_owner.digital_id : team.digital_id
+        }
+    }
+
     toTeamOwner(team_owner) {
         if (!team_owner) return false;
+
         return {
             id: team_owner.id,
             name: team_owner.name,
@@ -19,7 +33,7 @@ class TeamOwnerRepo {
             state_id: team_owner.state,
             city: team_owner.cities?.name,
             city_id: team_owner.city,
-            teams: team_owner.teams || [],
+            teams: team_owner.teams?.map((t) => this.toTeam(t, team_owner)) || [],
             notes: team_owner.team_owners_notes || [],
             liberty: team_owner.owner_liberty || [],
             digital_id: team_owner.digital_id
@@ -119,6 +133,10 @@ class TeamOwnerRepo {
             this.preventLoop++;
             if (err.errors[0].validatorKey === 'not_unique' && this.preventLoop <= 20) return await this.createTeam(team_owner_id, name);
         }
+    }
+
+    async getAllTeams() {
+        return await teams.findAll({include: [team_owners]});
     }
 
 }
