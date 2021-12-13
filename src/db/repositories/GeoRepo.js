@@ -37,7 +37,7 @@ class GeoRepo {
     }
 
     async getAllCountries() {
-        return await geo_countries.findAll({order: [['name', 'ASC']]});
+        return await geo_countries.findAll({include: {model: stadiums}, order: [['name', 'ASC']]});
     }
 
     async getCountriesWithStadium() {
