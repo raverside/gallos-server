@@ -7,7 +7,6 @@ class MembershipService {
     }
 
     static async getCountries(withStadium) {
-        console.log(withStadium);
         const countries = (withStadium) ? await GeoRepo.getCountriesWithStadium() : await GeoRepo.getAllCountries();
 
         return countries.map(GeoRepo.toCountry);
