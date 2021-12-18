@@ -29,9 +29,9 @@ class MatchmakingService {
                            || (+participant.weight < +opponent.weight && !opponent.participated_before)
                        ) {
                            if (!(participant.weight <= 55.9 && (opponent.weight >= participant.weight-0.5 && opponent.weight <= participant.weight+0.5))
-                               && !(participant.weight <= 64.3 && participant.weight > 55.9 && opponent.weight >= 55.4 && (opponent.weight >= participant.weight-1 && opponent.weight <= participant.weight+1))
-                               && !(participant.weight <= 65.8 && participant.weight > 64.3 && opponent.weight >= 54.9 && (opponent.weight >= participant.weight-1.5 && opponent.weight <= participant.weight+1.5))
-                               && !(participant.weight > 65.8 && opponent.weight >= 62.8 && (opponent.weight >= participant.weight-2 && opponent.weight <= participant.weight+2))) {
+                               && !(participant.weight <= 64.3 && participant.weight > 55.9 && (opponent.weight > 55.9 || (opponent.weight >= participant.weight-0.5 && opponent.weight <= participant.weight+0.5)) && (opponent.weight >= participant.weight-1 && opponent.weight <= participant.weight+1))
+                               && !(participant.weight <= 65.8 && participant.weight > 64.3 && (opponent.weight > 64.3 || (opponent.weight >= participant.weight-1 && opponent.weight <= participant.weight+1)) && (opponent.weight >= participant.weight-1.5 && opponent.weight <= participant.weight+1.5))
+                               && !(participant.weight > 65.8 && (opponent.weight > 65.8 || (opponent.weight >= participant.weight-1.5 && opponent.weight <= participant.weight+1.5)) && (opponent.weight >= participant.weight-2 && opponent.weight <= participant.weight+2))) {
                                return false;
                            }
                        } else {
