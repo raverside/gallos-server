@@ -39,7 +39,7 @@ class ParticipantRepo {
         return await participants.findAll({
             where: {event_id, status: "approved"},
             include: [
-                {model:teams, include: [{model: team_owners, include: [{model: mutual_liberty, as: 'owner_liberty', where: {active: true}}]}]}
+                {model:teams, include: [{model: team_owners, include: [{model: mutual_liberty, as: 'owner_liberty'}]}]}
             ],
             order: Sequelize.literal('random()')
         });
