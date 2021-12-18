@@ -18,7 +18,8 @@ class MatchmakingService {
                 if (matches.find(x => x.participant_id === participant.id || x.opponent_id === participant.id)) return false;
                 const match = participants.find((opponent) => {
                    if (matches.find(x => x.participant_id === opponent.id || x.opponent_id === opponent.id)) return false;
-                   if (opponent.id === participant.id || opponent.owner_account_number === participant.owner_account_number || opponent.team_id === participant.team_id) return false;
+                   if (opponent.id === participant.id || opponent.team.team_owner_id === participant.team.team_owner_id || opponent.team_id === participant.team_id) return false;
+                   if (participant.team.team_owner.owner_liberty.find(ml => ml.opponent_id === opponent.team.team_owner_id)) return false;
                    if (opponent.type !== participant.type) return false;
                    if (opponent.physical_advantage !== participant.physical_advantage) return false;
                    if (opponent.betting_pref !== participant.betting_pref && participant.betting_pref !== "open" && opponent.betting_pref !== "open" && !opponent.betting_pref.includes(participant.betting_pref) && !participant.betting_pref.includes(opponent.betting_pref)) return false;

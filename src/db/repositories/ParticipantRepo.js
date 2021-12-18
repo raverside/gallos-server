@@ -1,4 +1,4 @@
-const {participants} = require('../models');
+const {participants, teams, team_owners, mutual_liberty} = require('../models');
 const Sequelize = require('sequelize');
 
 class ParticipantRepo {
@@ -36,7 +36,13 @@ class ParticipantRepo {
     }
 
     async getApprovedByEventId(event_id) {
-        return await participants.findAll({where: {event_id, status: "approved"}, order: Sequelize.literal('random()')});
+        return await participants.findAll({
+            where: {event_id, status: "approved"},
+            include: [
+                {model:teams, include: [{model: team_owners, include: [{model: mutual_liberty, as: 'owner_liberty', where: {active: true}}]}]}
+            ],
+            order: Sequelize.literal('random()')
+        });
     }
 
     async upsertParticipant(participant) {

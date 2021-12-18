@@ -34,7 +34,6 @@ class TeamOwnerService {
 
     static async getAllTeams() {
         const teams = await TeamOwnerRepo.getAllTeams();
-console.log(teams);
         return teams.map((t) => TeamOwnerRepo.toTeam(t, t.team_owner));
     }
 
