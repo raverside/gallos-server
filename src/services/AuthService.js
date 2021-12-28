@@ -46,6 +46,7 @@ class AuthService {
      * @returns {Promise<Object>}
      */
     static decodeToken(token) {
+        if (!token) return false;
         return jwt.verify(token, process.env.JWT_SECRET);
     }
 
