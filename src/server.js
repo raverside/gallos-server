@@ -9,8 +9,8 @@ function startServer() {
     const io = new Server(server, { path: process.env.WEBSOCKET_PATH, cors: { origin: '*' } });
 
     io.on("connection", (socket) => {
-        socket.on('updateEvents', () => {
-            socket.broadcast.emit('syncEvents');
+        socket.on('updateEvents', (payload) => {
+            socket.broadcast.emit('syncEvents', payload);
         })
     });
 }
