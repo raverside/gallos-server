@@ -41,6 +41,14 @@ express.get('/removeEvent/:event_id', routeHandler(async (request, response) => 
     response.json({success:true});
 }));
 
+express.post('/changeEventPhase', routeHandler(async (request, response) => {
+    const {eventId, phase} = request.body;
+    await EventRepo.updateEvent({id: eventId, phase});
+
+    response.status(200);
+    response.json({success:true});
+}));
+
 express.post('/upsertEvent', routeHandler(async (request, response) => {
     const stadium_id = request.body.stadium_id || request.currentUser.get('stadium_id');
     const event = await EventService.upsertEvent({...request.body, stadium_id});
@@ -65,7 +73,7 @@ express.post('/uploadEventPicture', routeHandler(async (request, response) => {
 
 express.get('/announceEvent/:event_id', routeHandler(async (request, response) => {
     const {event_id} = request.params;
-    EventRepo.updateEvent({id: event_id, phase: "on going"});
+    await EventRepo.updateEvent({id: event_id, phase: "on going"});
 
     response.status(200);
     response.json({success:true});
