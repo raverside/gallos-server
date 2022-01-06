@@ -3,6 +3,7 @@ const routeHandler = require('../routeHandler');
 const ParticipantService = require('../../services/ParticipantService');
 const multer  = require('multer');
 const upload = multer({ dest: 'public/uploads/' }).single('participant');
+const sharp = require('sharp');
 
 express.post('/upsertParticipant', routeHandler(async (request, response) => {
     const {event_id} = request.body;
@@ -13,8 +14,9 @@ express.post('/upsertParticipant', routeHandler(async (request, response) => {
 }));
 
 express.post('/uploadParticipantPicture', routeHandler(async (request, response) => {
-    upload(request, response, function (err) {
+    upload(request, response, async function (err) {
         if (request.file?.filename) {
+            await sharp(request.file.path, {failOnError: false}).resize(350, 350).toFile('public/uploads/thumb_'+request.file.filename);
             response.status(200);
             response.json({filename: request.file.filename});
         } else if (err) {
