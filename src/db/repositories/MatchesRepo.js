@@ -48,7 +48,10 @@ class MatchesRepo {
     }
 
     async publishMatches(event_id, matches_limit) {
-        return await matches.update({live: true}, {where: {event_id}, limit: matches_limit});
+        const matchesToPublish = await matches.findAll({where: {event_id}, order: [['number', 'ASC']], limit: matches_limit});
+        const matchesIds = matchesToPublish.map((m) => m.id);
+
+        return await matches.update({live: true}, {where: {id: matchesIds}});
     }
 
     async publishMatch(id) {
@@ -57,6 +60,10 @@ class MatchesRepo {
 
     async updateMatch(id, match) {
         return await matches.update(match, {where: {id}});
+    }
+
+    async countMatchesByEventId(event_id) {
+        return await matches.count({where: {event_id}});
     }
 
     async publishSpecial(guest_id) {

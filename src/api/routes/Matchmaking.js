@@ -1,6 +1,7 @@
 const express = require('../express');
 const routeHandler = require('../routeHandler');
 const MatchmakingService = require('../../services/MatchmakingService');
+const MatchesRepo = require('../../db/repositories/MatchesRepo');
 const EventService = require('../../services/EventService');
 
 express.post('/generateMatches/:event_id', routeHandler(async (request, response) => {
@@ -48,7 +49,8 @@ express.get('/switchSides/:match_id', routeHandler(async (request, response) => 
 
 express.post('/createMatch', routeHandler(async (request, response) => {
     const {event_id, participant_id, opponent_id, live} = request.body;
-    await MatchmakingService.createMatch({participant_id, opponent_id, live, event_id, manual: true});
+    const eventMatchesCount = await MatchesRepo.countMatchesByEventId(event_id);
+    await MatchmakingService.createMatch({participant_id, opponent_id, live, event_id, number: eventMatchesCount + 1, manual: true});
 
     response.status(200);
     response.json({success: true});

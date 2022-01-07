@@ -9,7 +9,7 @@ class MatchmakingService {
     }
 
     static async generateMatches(event_id, method = 0, special_guests = []) {
-        MatchesRepo.clearMatches(event_id);
+        await MatchesRepo.clearMatches(event_id);
         const participants = await ParticipantRepo.getApprovedByEventId(event_id);
         const matches = [];
 
@@ -47,9 +47,9 @@ class MatchmakingService {
         }
 
         if (matches.length > 0) {
-            matches.forEach((match) => {
-                MatchesRepo.createMatch(match);
-            })
+            matches.forEach((match, index) => {
+                MatchesRepo.createMatch({...match, number: index + 1});
+            });
         }
 
         return matches;
