@@ -59,11 +59,15 @@ class MatchesRepo {
     }
 
     async updateMatch(id, match) {
-        return await matches.update(match, {where: {id}});
+        return await matches.update(match, {where: {id}, returning: true});
     }
 
     async countMatchesByEventId(event_id) {
         return await matches.count({where: {event_id}});
+    }
+
+    async getLiveMatchesByEventId(event_id) {
+        return await matches.findAll({where: {event_id, live: true}, order: [['number', 'ASC']]});
     }
 
     async publishSpecial(guest_id) {
