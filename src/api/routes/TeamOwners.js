@@ -46,6 +46,22 @@ express.post(`/addTeamOwnerTeam`, routeHandler(async (request, response) => {
     response.json({success: true});
 }));
 
+express.post(`/updateTeamOwnerTeam`, routeHandler(async (request, response) => {
+    const {id, name} = request.body;
+    const updated = await TeamOwnerService.updateTeam(id, name);
+
+    response.status(200);
+    response.json({success: !!updated});
+}));
+
+express.post(`/removeTeamOwnerTeam`, routeHandler(async (request, response) => {
+    const {id} = request.body;
+    const updated = await TeamOwnerService.removeTeam(id);
+
+    response.status(200);
+    response.json({success: !!updated});
+}));
+
 express.post(`/addTeamOwnerNote`, routeHandler(async (request, response) => {
     const {id, noteTitle, note} = request.body;
     const team_owner = await TeamOwnerService.createNote(id, noteTitle, note);

@@ -41,6 +41,14 @@ class TeamOwnerService {
         return await TeamOwnerRepo.createTeam(id, team);
     }
 
+    static async updateTeam(id, name) {
+        return await TeamOwnerRepo.updateTeam({id, name});
+    }
+
+    static async removeTeam(id) {
+        return await TeamOwnerRepo.removeTeam(id);
+    }
+
     static async createLiberty(owner_id, reason, opponent_id, active) {
         return TeamOwnerRepo.toTeamOwner(await TeamOwnerRepo.createLiberty(owner_id, reason, opponent_id, active));
     }
