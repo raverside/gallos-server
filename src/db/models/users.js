@@ -16,7 +16,8 @@ module.exports = (sequelize, DataTypes) => {
             labels: DataTypes.TEXT,
             last_login: DataTypes.DATE,
             created_at: DataTypes.DATE,
-            updated_at: DataTypes.DATE
+            updated_at: DataTypes.DATE,
+            blocked: DataTypes.BOOLEAN
         },
         { underscored: true }
     );

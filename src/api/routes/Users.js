@@ -1,6 +1,7 @@
 const express = require('../express');
 const routeHandler = require('../routeHandler');
 const UserService = require('../../services/UserService');
+const UserRepo = require('../../db/repositories/UserRepo');
 const multer  = require('multer');
 const upload = multer({ dest: 'public/uploads/' }).single('user');
 
@@ -23,6 +24,21 @@ express.get('/getUsers', routeHandler(async (request, response) => {
     };
     const page = request.query.page || 0;
     const users = await UserService.getUsers(filter, page);
+
+    response.status(200);
+    response.json({users});
+}));
+
+express.get('/getDashUsers', routeHandler(async (request, response) => {
+    const filter = {
+        search: request.query.search,
+        country: request.query.country,
+        state: request.query.state,
+        city: request.query.city,
+        membership: request.query.membership,
+        sort: request.query.sort || "az",
+    };
+    const users = await UserService.getDashUsers(filter);
 
     response.status(200);
     response.json({users});
@@ -111,4 +127,22 @@ express.post(`/updateCurrentUser`, routeHandler(async (request, response) => {
 
     response.status(200);
     response.json({user});
+}));
+
+express.post(`/upsertUser`, routeHandler(async (request, response) => {
+    const {id, username, phone, photo, role, passcode, stadium_id} = request.body;
+    const user = id ? await UserRepo.updateUser(id, {username, phone, photo, role, passcode, stadium_id}) : await UserRepo.createUser({username, phone, photo, role, passcode, stadium_id});
+
+    response.status(200);
+    response.json({user});
+}));
+
+express.post(`/toggleUserBlock`, routeHandler(async (request, response) => {
+    const user = await UserRepo.getUserById(request.body.id);
+    if (user) {
+        user.blocked = !user.blocked;
+        user.save();
+    }
+    response.status(200);
+    response.json({success: true});
 }));

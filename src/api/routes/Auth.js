@@ -22,7 +22,7 @@ express.post('/loginAdmin', routeHandler(async (request, response) => {
     const {phone, passcode} = request.body;
     const user = await UserRepo.getUserByCredentials(phone, passcode.toUpperCase().replace(/\s/g, ''));
 
-    if (user && user.role !== "user") {
+    if (user && user.role !== "user" && !user.blocked) {
         const token = await AuthService.getToken(user.id);
         user.last_login = new Date(); user.save();
         response.status(200);
@@ -38,7 +38,7 @@ express.get('/tokenLogin', routeHandler(async (request, response) => {
     const userId = AuthService.decodeToken(token).id;
     const user = await UserRepo.getUserById(userId);
 
-    if (user) {
+    if (user && !user.blocked) {
         user.last_login = new Date(); user.save();
         response.status(200);
         response.json({user: UserRepo.toUser(user)});

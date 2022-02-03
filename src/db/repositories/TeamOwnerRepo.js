@@ -1,4 +1,6 @@
 const {teams, team_owners, team_owners_notes, mutual_liberty, geo_countries, geo_states, geo_cities} = require('../models');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 class TeamOwnerRepo {
 
@@ -68,6 +70,15 @@ class TeamOwnerRepo {
                 ]
             }
         ];
+    }
+
+    async countTeamOwners() {
+        return {
+            team_owners: await team_owners.count(),
+            teams: await teams.count(),
+            this_week: await team_owners.count({where: {created_at: {[Op.gt]: Sequelize.literal('NOW() - INTERVAL \'7d\'')}}}),
+            last_week: await team_owners.count({where: {created_at: {[Op.lt]: Sequelize.literal('NOW() - INTERVAL \'7d\''), [Op.gt]: Sequelize.literal('NOW() - INTERVAL \'14d\'')}}}),
+        };
     }
 
     async getById(id) {

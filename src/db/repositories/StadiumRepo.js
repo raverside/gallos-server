@@ -47,6 +47,10 @@ class StadiumRepo {
         return await stadiums.findAll({include: this.includeQuery()});
     }
 
+    async countStadiums() {
+        return await stadiums.count();
+    }
+
     async getStadiums(filterQuery, page, order) {
         // const limit = 10;
         // const offset = limit * page;

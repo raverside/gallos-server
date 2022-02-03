@@ -71,6 +71,14 @@ class EventRepo {
         return await events.findOne({where: {id}, include: this.includeQuery(), order: [[{model: matches}, 'created_at', 'DESC'], [{model: matches}, 'id', 'DESC']]});
     }
 
+    async countEvents() {
+        return {
+            total: await events.count(),
+            this_week: await events.count({where: {created_at: {[Op.gt]: Sequelize.literal('NOW() - INTERVAL \'7d\'')}}}),
+            last_week: await events.count({where: {created_at: {[Op.lt]: Sequelize.literal('NOW() - INTERVAL \'7d\''), [Op.gt]: Sequelize.literal('NOW() - INTERVAL \'14d\'')}}}),
+        };
+    }
+
     async getEventsByStadiumId(stadium_id, filterQuery, page, order = [[{model: matches}, 'created_at', 'DESC'], [{model: matches}, 'id', 'DESC']]) {
         const limit = 5;
         const offset = limit * page;

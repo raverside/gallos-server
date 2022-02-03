@@ -8,3 +8,4 @@ require('./Memberships');
 require('./TeamOwners');
 require('./Geo');
 require('./Judge');
+require('./Overview');

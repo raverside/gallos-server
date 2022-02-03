@@ -1,5 +1,6 @@
 const {users, users_notes, stadiums, geo_countries, geo_states, geo_cities, users_labels} = require('../models');
 const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 class UserRepo {
 
@@ -21,8 +22,10 @@ class UserRepo {
             labels: user.labels,
             notes: user.user_notes,
             stadium: user.stadium,
+            stadium_id: user.stadium_id,
             created_at: user.created_at,
             last_login: user.last_login,
+            blocked: user.blocked
         }
     }
 
@@ -59,6 +62,14 @@ class UserRepo {
         return await users.create(user);
     }
 
+    async countUsers() {
+        return {
+            this_week: await users.count({where: {role: "user",created_at: {[Op.gt]: Sequelize.literal('NOW() - INTERVAL \'7d\'')}}}),
+            last_week: await users.count({where: {role: "user", created_at: {[Op.lt]: Sequelize.literal('NOW() - INTERVAL \'7d\''), [Op.gt]: Sequelize.literal('NOW() - INTERVAL \'14d\'')}}}),
+            total: await users.count({where: {role: "user"}})
+        }
+    }
+
     async getUserByCredentials(phone, passcode) {
         return await users.findOne({ where: {
             passcode,
@@ -75,6 +86,11 @@ class UserRepo {
         const offset = limit * page;
 
         return await users.findAll({where: {...{role:"user"}, ...filterQuery}, order, offset, limit});
+    }
+
+    async getDashUsers(filterQuery, order) {
+
+        return await users.findAll({where: {...{role: {[Sequelize.Op.not]: "user"}}, ...filterQuery}, order});
     }
 
     async updateUser(id, newValues) {

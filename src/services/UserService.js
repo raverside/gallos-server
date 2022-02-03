@@ -26,6 +26,24 @@ class UserService {
         return users.map(UserRepo.toUser);
     }
 
+    static async getDashUsers(filter = {}) {
+        let filterQuery = {};
+        if (filter.country) filterQuery.country = +filter.country;
+        if (filter.state) filterQuery.state = +filter.state;
+        if (filter.city) filterQuery.city = +filter.city;
+        // if (filter.membership) filterQuery.membership = filter.membership;
+        if (filter.search) {
+            filterQuery[Op.or] = {
+                username: {[Op.iLike]: '%'+filter.search+'%'},
+                labels: {[Op.iLike]: '%'+filter.search+'%'},
+            };
+        }
+        const order = (filter.sort === "za") ? [['username', 'DESC']] : [['username', 'ASC']];
+        const users = await UserRepo.getDashUsers(filterQuery, order);
+
+        return users.map(UserRepo.toUser);
+    }
+
     static async updateUserProfile(id, phone, passcode) {
         const updatedValues = {phone};
         if (passcode) {
