@@ -30,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
             physical_advantage: DataTypes.STRING,
             status: DataTypes.STRING,
             reason: DataTypes.STRING,
+            observation: DataTypes.STRING,
         },
         { underscored: true }
     );

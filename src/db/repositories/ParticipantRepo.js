@@ -28,6 +28,7 @@ class ParticipantRepo {
             physical_advantage: participant.physical_advantage,
             status: participant.status,
             reason: participant.reason,
+            observation: participant.observation,
         }
     }
 
