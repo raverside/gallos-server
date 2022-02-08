@@ -37,7 +37,7 @@ class TeamOwnerRepo {
             city_id: team_owner.city,
             teams: team_owner.teams?.map((t) => this.toTeam(t, team_owner)) || [],
             notes: team_owner.team_owners_notes || [],
-            liberty: team_owner.owner_liberty || [],
+            liberty: [...team_owner.owner_liberty, ...team_owner.opponent_liberty] || [],
             digital_id: team_owner.digital_id
         }
     }
@@ -67,6 +67,13 @@ class TeamOwnerRepo {
                 as: 'owner_liberty',
                 include: [
                     {model: team_owners, as: 'opponent_liberty'}
+                ]
+            },
+            {
+                model: mutual_liberty,
+                as: 'opponent_liberty',
+                include: [
+                    {model: team_owners, as: 'owner_liberty'}
                 ]
             }
         ];
