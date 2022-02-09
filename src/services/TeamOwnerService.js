@@ -49,6 +49,10 @@ class TeamOwnerService {
         return await TeamOwnerRepo.removeTeam(id);
     }
 
+    static async removeTeamOwner(id) {
+        return await TeamOwnerRepo.removeTeamOwner(id);
+    }
+
     static async createLiberty(owner_id, reason, opponent_id, active) {
         return TeamOwnerRepo.toTeamOwner(await TeamOwnerRepo.createLiberty(owner_id, reason, opponent_id, active));
     }

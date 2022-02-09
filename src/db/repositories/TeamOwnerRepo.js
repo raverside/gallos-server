@@ -161,6 +161,10 @@ class TeamOwnerRepo {
         return await teams.destroy({where: {id}});
     }
 
+    async removeTeamOwner(id) {
+        return await team_owners.destroy({where: {id}});
+    }
+
     async getAllTeams() {
         return await teams.findAll({include: [team_owners]});
     }

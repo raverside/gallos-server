@@ -54,6 +54,14 @@ express.post(`/updateTeamOwnerTeam`, routeHandler(async (request, response) => {
     response.json({success: !!updated});
 }));
 
+express.post(`/removeTeamOwner`, routeHandler(async (request, response) => {
+    const {id} = request.body;
+    const updated = await TeamOwnerService.removeTeamOwner(id);
+
+    response.status(200);
+    response.json({success: !!updated});
+}));
+
 express.post(`/removeTeamOwnerTeam`, routeHandler(async (request, response) => {
     const {id} = request.body;
     const updated = await TeamOwnerService.removeTeam(id);
