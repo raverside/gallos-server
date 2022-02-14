@@ -23,10 +23,10 @@ module.exports = (sequelize, DataTypes) => {
         team_owners.belongsTo(models.geo_countries, {as: 'countries', targetKey: "id", foreignKey: "country"});
         team_owners.belongsTo(models.geo_states, {as: 'states', targetKey: "id", foreignKey: "state"});
         team_owners.belongsTo(models.geo_cities, {as: 'cities', targetKey: "id", foreignKey: "city"});
-        team_owners.hasMany(models.teams);
-        team_owners.hasMany(models.team_owners_notes, {sourceKey: "id", foreignKey: "team_owner_id"});
-        team_owners.hasMany(models.mutual_liberty, {sourceKey: "id", foreignKey: "owner_id", as: 'owner_liberty'});
-        team_owners.hasMany(models.mutual_liberty, {sourceKey: "id", foreignKey: "opponent_id", as: 'opponent_liberty'});
+        team_owners.hasMany(models.teams, {onDelete: "cascade"});
+        team_owners.hasMany(models.team_owners_notes, {sourceKey: "id", foreignKey: "team_owner_id", onDelete: "cascade"});
+        team_owners.hasMany(models.mutual_liberty, {sourceKey: "id", foreignKey: "owner_id", as: 'owner_liberty', onDelete: "cascade"});
+        team_owners.hasMany(models.mutual_liberty, {sourceKey: "id", foreignKey: "opponent_id", as: 'opponent_liberty', onDelete: "cascade"});
     };
 
     return team_owners;

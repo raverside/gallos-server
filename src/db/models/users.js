@@ -27,8 +27,8 @@ module.exports = (sequelize, DataTypes) => {
         users.belongsTo(models.geo_countries, {as: 'countries', targetKey: "id", foreignKey: "country"});
         users.belongsTo(models.geo_states, {as: 'states', targetKey: "id", foreignKey: "state"});
         users.belongsTo(models.geo_cities, {as: 'cities', targetKey: "id", foreignKey: "city"});
-        users.hasMany(models.users_notes, {as: 'user_notes', sourceKey: "id", foreignKey: "user_id"});
-        users.hasMany(models.users_notes, {as: 'creator_notes', sourceKey: "id", foreignKey: "creator_id"});
+        users.hasMany(models.users_notes, {as: 'user_notes', sourceKey: "id", foreignKey: "user_id", onDelete: "cascade"});
+        users.hasMany(models.users_notes, {as: 'creator_notes', sourceKey: "id", foreignKey: "creator_id", onDelete: "cascade"});
     };
 
     return users;

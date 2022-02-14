@@ -32,8 +32,8 @@ module.exports = (sequelize, DataTypes) => {
 
     events.associate = (models) => {
         events.belongsTo(models.stadiums);
-        events.hasMany(models.participants);
-        events.hasMany(models.matches);
+        events.hasMany(models.participants, {onDelete: "cascade"});
+        events.hasMany(models.matches, {onDelete: "cascade"});
     };
 
     return events;
