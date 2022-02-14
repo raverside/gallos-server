@@ -25,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
             gold_two: DataTypes.INTEGER,
             stadium_id: DataTypes.UUID,
             phase: DataTypes.STRING,
+            manual_matching: DataTypes.BOOLEAN
         },
         { underscored: true }
     );

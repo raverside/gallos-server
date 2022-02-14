@@ -50,7 +50,8 @@ express.get('/switchSides/:match_id', routeHandler(async (request, response) => 
 express.post('/createMatch', routeHandler(async (request, response) => {
     const {event_id, participant_id, opponent_id, live} = request.body;
     const eventMatchesCount = await MatchesRepo.countMatchesByEventId(event_id);
-    await MatchmakingService.createMatch({participant_id, opponent_id, live, event_id, number: eventMatchesCount + 1, manual: true});
+    const event = await EventService.getEventById(event_id);
+    await MatchmakingService.createMatch({participant_id, opponent_id, live, event_id, number: eventMatchesCount + 1, manual: !event.manual_matching});
 
     response.status(200);
     response.json({success: true});

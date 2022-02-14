@@ -29,6 +29,7 @@ class EventRepo {
             stadium_five_sec: event.stadium.five_sec,
             participants: event.participants,
             matches: event.matches,
+            manual_matching: event.manual_matching
         }
     }
 
