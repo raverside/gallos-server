@@ -23,6 +23,7 @@ class UserRepo {
             notes: user.user_notes,
             stadium: user.stadium,
             stadium_id: user.stadium_id,
+            stadium_name: user.stadium?.name,
             created_at: user.created_at,
             last_login: user.last_login,
             blocked: user.blocked
@@ -90,7 +91,7 @@ class UserRepo {
 
     async getDashUsers(filterQuery, order) {
 
-        return await users.findAll({where: {...{role: {[Sequelize.Op.not]: "user"}}, ...filterQuery}, order});
+        return await users.findAll({where: {...{role: {[Sequelize.Op.not]: "user"}}, ...filterQuery}, include: this.includeQuery(), order});
     }
 
     async updateUser(id, newValues) {
