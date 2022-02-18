@@ -55,6 +55,10 @@ class ParticipantRepo {
         }
     }
 
+    async removeParticipant(id) {
+        return await participants.destroy({where: {id}});
+    }
+
     async findParticipantByPayload(payload) {
         return await participants.findOne({where: payload});
     }

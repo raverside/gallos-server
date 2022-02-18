@@ -35,3 +35,15 @@ express.post('/findParticipantByStadiumData', routeHandler(async (request, respo
     response.status(200);
     response.json({participant});
 }));
+
+express.get('/removeParticipant/:id', routeHandler(async (request, response) => {
+    const {id} = request.params;
+    if (!id) {
+        response.status(500);
+    } else {
+        await ParticipantService.removeParticipant(id);
+
+        response.status(200);
+        response.json({success: true});
+    }
+}));

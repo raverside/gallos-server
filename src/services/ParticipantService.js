@@ -15,6 +15,9 @@ class ParticipantService {
         return participant ? ParticipantRepo.toParticipant(participant) : false;
     }
 
+    static async removeParticipant(id) {
+        return await ParticipantRepo.removeParticipant(id);
+    }
 }
 
 module.exports = ParticipantService;
