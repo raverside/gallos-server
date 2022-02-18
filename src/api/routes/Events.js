@@ -12,7 +12,7 @@ express.get('/getEvent/:id', routeHandler(async (request, response) => {
 
     response.status(200);
     response.json({event});
-}));
+}, {enforceLogin: false}));
 
 express.get('/getEvents', routeHandler(async (request, response) => {
     const filter = {
@@ -25,13 +25,13 @@ express.get('/getEvents', routeHandler(async (request, response) => {
         dateFilter: request.query.dateFilter,
     };
     const page = request.query.page || 0;
-    const stadium_id = request.currentUser.get('stadium_id');
+    const stadium_id = request.currentUser?.get('stadium_id') || false;
     const events = await EventService.getEventsByStadiumId(stadium_id, filter, page);
     const eventCount = await EventService.countEventsByStadiumId(stadium_id);
 
     response.status(200);
     response.json({events, eventCount});
-}));
+}, {enforceLogin: false}));
 
 express.get('/removeEvent/:event_id', routeHandler(async (request, response) => {
     const {event_id} = request.params;
@@ -116,4 +116,4 @@ express.post('/statistics/:stadium_id/:type', routeHandler(async (request, respo
             response.status(500);
             response.json({error: "unknown_type"});
     }
-}));
+}, {enforceLogin: false}));

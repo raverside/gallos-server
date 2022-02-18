@@ -10,7 +10,7 @@ express.get('/getStadium/:id', routeHandler(async (request, response) => {
 
     response.status(200);
     response.json({stadium});
-}));
+}, {enforceLogin: false}));
 
 express.get('/getStadiums', routeHandler(async (request, response) => {
     const filter = {
@@ -26,14 +26,14 @@ express.get('/getStadiums', routeHandler(async (request, response) => {
 
     response.status(200);
     response.json({stadiums});
-}));
+}, {enforceLogin: false}));
 
 express.get('/getAllStadiums', routeHandler(async (request, response) => {
     const stadiums = await StadiumService.getAllStadiums();
 
     response.status(200);
     response.json({stadiums});
-}));
+}, {enforceLogin: false}));
 
 express.post('/upsertStadium', routeHandler(async (request, response) => {
     const stadium = await StadiumService.upsertStadium(request.body);
