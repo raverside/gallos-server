@@ -4,6 +4,7 @@ const EventService = require('../../services/EventService');
 const multer  = require('multer');
 const upload = multer({ dest: 'public/uploads/' }).single('event');
 const EventRepo = require('../../db/repositories/EventRepo');
+const MatchesRepo = require('../../db/repositories/MatchesRepo');
 const {sequelize} = require('../../db/models');
 
 express.get('/getEvent/:id', routeHandler(async (request, response) => {
@@ -73,6 +74,8 @@ express.post('/uploadEventPicture', routeHandler(async (request, response) => {
 
 express.get('/announceEvent/:event_id', routeHandler(async (request, response) => {
     const {event_id} = request.params;
+    await MatchesRepo.deleteUnmatched(event_id);
+    await MatchesRepo.updateMatchNumbers(event_id);
     await EventRepo.updateEvent({id: event_id, phase: "on going"});
 
     response.status(200);

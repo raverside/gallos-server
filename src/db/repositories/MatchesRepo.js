@@ -1,3 +1,5 @@
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 const {matches, participants} = require('../models');
 
 class MatchesRepo {
@@ -82,6 +84,23 @@ class MatchesRepo {
 
     async deleteMatch(id) {
         return await matches.destroy({where: {id}});
+    }
+
+    async deleteUnmatched(event_id) {
+        const matchesToDelete = await matches.findAll({where: {event_id, [Op.or]: [{participant_id: null}, {opponent_id: null}]}});
+        const matchesIds = matchesToDelete.map((m) => m.id);
+
+        return await matches.destroy({where: {id: matchesIds} });
+    }
+
+    async updateMatchNumbers(event_id) {
+        const allEventMatches = await matches.findAll({where: {event_id}, order: [['number', 'ASC']]});
+        allEventMatches.map((m, i) => {
+            m.number = i + 1;
+            m.save();
+        });
+
+        return true;
     }
 }
 

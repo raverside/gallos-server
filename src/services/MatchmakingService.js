@@ -78,7 +78,7 @@ class MatchmakingService {
             });
         }
 
-        MatchesRepo.publishMatches(event_id, matches_available);
+        await MatchesRepo.publishMatches(event_id, matches_available);
     }
 
     static async publishMatch(match_id) {
@@ -89,8 +89,17 @@ class MatchmakingService {
         MatchesRepo.createMatch(match);
     }
 
+    static async unmatch(match_id) {
+        const match = await MatchesRepo.getById(match_id);
+        return await MatchesRepo.updateMatch(match_id, {...match, opponent_id: null, participant_id: null});
+    }
+
     static async deleteMatch(match_id) {
         MatchesRepo.deleteMatch(match_id);
+    }
+
+    static async updateMatchNumbers(event_id) {
+        MatchesRepo.updateMatchNumbers(event_id);
     }
 
 }

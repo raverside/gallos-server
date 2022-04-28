@@ -57,10 +57,34 @@ express.post('/createMatch', routeHandler(async (request, response) => {
     response.json({success: true});
 }));
 
-express.get('/deleteMatch/:match_id', routeHandler(async (request, response) => {
+express.get('/unmatch/:match_id', routeHandler(async (request, response) => {
     const {match_id} = request.params;
-    await MatchmakingService.deleteMatch(match_id);
+    await MatchmakingService.unmatch(match_id);
 
     response.status(200);
     response.json({success: true});
 }))
+
+express.get('/deleteMatch/:match_id', routeHandler(async (request, response) => {
+    const {match_id} = request.params;
+    const match = await MatchmakingService.getById(match_id);
+    if (match) {
+        await MatchmakingService.deleteMatch(match_id);
+        await MatchmakingService.updateMatchNumbers(match.event_id);
+    }
+
+    response.status(200);
+    response.json({success: true});
+}))
+
+express.post('/updateMatchParticipant', routeHandler(async (request, response) => {
+    const {match_id, participant_id, opponent_id} = request.body;
+    if (participant_id) {
+        await MatchesRepo.updateMatch(match_id, {participant_id});
+    } else if (opponent_id) {
+        await MatchesRepo.updateMatch(match_id, {opponent_id});
+    }
+
+    response.status(200);
+    response.json({success: true});
+}));
