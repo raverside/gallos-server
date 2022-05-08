@@ -26,6 +26,7 @@ class EventRepo {
             stadium_id: event.stadium_id,
             stadium_name: event.stadium?.name,
             stadium_image: event.stadium?.image,
+            stadium_logo: event.stadium?.logo || false,
             stadium_five_sec: event.stadium?.five_sec,
             participants: event.participants,
             matches: event.matches,
