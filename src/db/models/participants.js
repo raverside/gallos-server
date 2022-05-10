@@ -31,6 +31,7 @@ module.exports = (sequelize, DataTypes) => {
             status: DataTypes.STRING,
             reason: DataTypes.STRING,
             observation: DataTypes.STRING,
+            deleted: DataTypes.BOOLEAN,
         },
         { underscored: true }
     );

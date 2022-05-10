@@ -9,6 +9,8 @@ class MatchmakingService {
     }
 
     static async generateMatches(event_id, method = 0, special_guests = []) {
+        await ParticipantRepo.removeDeleted(event_id);
+        await ParticipantRepo.updateParticipantCages(event_id);
         await MatchesRepo.clearMatches(event_id);
         const participants = await ParticipantRepo.getApprovedByEventId(event_id);
         const matches = [];
