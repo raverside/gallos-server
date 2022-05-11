@@ -50,6 +50,14 @@ express.post('/changeEventPhase', routeHandler(async (request, response) => {
     response.json({success:true});
 }));
 
+express.post('/changeAdminEventPhase', routeHandler(async (request, response) => {
+    const {eventId, admin_phase} = request.body;
+    await EventRepo.updateEvent({id: eventId, admin_phase});
+
+    response.status(200);
+    response.json({success:true});
+}));
+
 express.post('/upsertEvent', routeHandler(async (request, response) => {
     const stadium_id = request.body.stadium_id || request.currentUser.get('stadium_id');
     const event = await EventService.upsertEvent({...request.body, stadium_id});

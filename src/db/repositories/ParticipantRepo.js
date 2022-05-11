@@ -24,7 +24,7 @@ class ParticipantRepo {
             breeder_id: participant.breeder_id || null,
             breeder_name: participant.breeder_name || null,
             weight: participant.weight || null,
-            participated_before: participant.participated_before || null,
+            participated_before: participant.participated_before || false,
             physical_advantage: participant.physical_advantage || null,
             status: participant.status,
             reason: participant.reason,

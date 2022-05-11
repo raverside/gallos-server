@@ -18,6 +18,7 @@ class EventRepo {
             first_race_time: event.first_race_time,
             type: event.type?.split(','),
             phase: event.phase,
+            admin_phase: event.admin_phase,
             bronze: event.bronze,
             silver_one: event.silver_one,
             silver_two: event.silver_two,
