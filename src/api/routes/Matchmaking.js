@@ -88,3 +88,31 @@ express.post('/updateMatchParticipant', routeHandler(async (request, response) =
     response.status(200);
     response.json({success: true});
 }));
+
+express.post('/confirmMatchColor', routeHandler(async (request, response) => {
+    const {match_id} = request.body;
+    const match = await MatchmakingService.getById(match_id);
+    match.color_confirmed = true;
+    const result = await match.save();
+
+    if (!result) {
+        response.status(500);
+    }
+    const event = await EventService.getEventById(match.event_id);
+
+    response.status(200);
+    response.json({event});
+}));
+
+express.post('/confirmAllMatchesColor', routeHandler(async (request, response) => {
+    const {event_id} = request.body;
+
+    const result = await MatchmakingService.confirmAllMatchesColor(event_id);
+    if (!result) {
+        response.status(500);
+    }
+    const event = await EventService.getEventById(event_id);
+
+    response.status(200);
+    response.json({event});
+}));

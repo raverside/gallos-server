@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
             result: DataTypes.INTEGER,
             number: DataTypes.INTEGER,
             match_time: DataTypes.INTEGER,
+            color_confirmed: DataTypes.BOOLEAN,
             created_at: DataTypes.DATE,
             updated_at: DataTypes.DATE
         },

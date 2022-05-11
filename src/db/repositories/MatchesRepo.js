@@ -102,6 +102,11 @@ class MatchesRepo {
 
         return true;
     }
+
+    async confirmAllMatchesColor(event_id) {
+        await matches.update({color_confirmed: true}, {where: {event_id}});
+        return true;
+    }
 }
 
 module.exports = new MatchesRepo();

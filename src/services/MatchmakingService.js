@@ -104,6 +104,10 @@ class MatchmakingService {
         MatchesRepo.updateMatchNumbers(event_id);
     }
 
+    static async confirmAllMatchesColor(event_id) {
+        MatchesRepo.confirmAllMatchesColor(event_id);
+    }
+
 }
 
 module.exports = MatchmakingService;
