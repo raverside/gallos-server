@@ -58,7 +58,7 @@ class MatchmakingService {
     }
 
     static async publishMatches({event_id, matches_limit, special_guests, method, versus_category}) {
-        EventRepo.updateEvent({id: event_id, phase: "arrangement", manual_matching: (method === 0 && matches_limit === 0)});
+        EventRepo.updateEvent({id: event_id, phase: "arrangement", admin_phase: null, manual_matching: (method === 0 && matches_limit === 0)});
         if (matches_limit === 0) await MatchesRepo.clearMatches(event_id);
 
         let matches_available = matches_limit || 0;

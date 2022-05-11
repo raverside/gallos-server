@@ -84,7 +84,7 @@ express.get('/announceEvent/:event_id', routeHandler(async (request, response) =
     const {event_id} = request.params;
     await MatchesRepo.deleteUnmatched(event_id);
     await MatchesRepo.updateMatchNumbers(event_id);
-    await EventRepo.updateEvent({id: event_id, phase: "on going"});
+    await EventRepo.updateEvent({id: event_id, phase: "on going", admin_phase: null});
 
     response.status(200);
     response.json({success:true});
