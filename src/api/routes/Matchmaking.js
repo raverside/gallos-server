@@ -36,6 +36,11 @@ express.get('/switchSides/:match_id', routeHandler(async (request, response) => 
     const oldOpponentId = ""+match.opponent_id;
     match.participant_id = oldOpponentId;
     match.opponent_id = oldParticipantId;
+    if (match.result === 0) {
+        match.result = 1;
+    } else if (match.result === 1) {
+        match.result = 0;
+    }
     const result = await match.save();
 
     if (!result) {
