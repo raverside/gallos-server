@@ -56,6 +56,7 @@ class UserRepo {
     }
 
     async getUserById(id) {
+        if (!id) return false;
         return await users.findOne({ where: {id}, include: this.includeQuery() });
     }
 

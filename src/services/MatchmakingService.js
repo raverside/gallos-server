@@ -93,7 +93,7 @@ class MatchmakingService {
 
     static async unmatch(match_id) {
         const match = await MatchesRepo.getById(match_id);
-        return await MatchesRepo.updateMatch(match_id, {...match, opponent_id: null, participant_id: null});
+        return await MatchesRepo.updateMatch(match_id, {...match, opponent_id: null, participant_id: null, color_confirmed: false});
     }
 
     static async deleteMatch(match_id) {

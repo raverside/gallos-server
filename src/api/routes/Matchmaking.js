@@ -79,7 +79,9 @@ express.get('/deleteMatch/:match_id', routeHandler(async (request, response) => 
 
 express.post('/updateMatchParticipant', routeHandler(async (request, response) => {
     const {match_id, participant_id, opponent_id} = request.body;
-    if (participant_id) {
+    if (participant_id && opponent_id) {
+        await MatchesRepo.updateMatch(match_id, {participant_id, opponent_id});
+    } else if (participant_id) {
         await MatchesRepo.updateMatch(match_id, {participant_id});
     } else if (opponent_id) {
         await MatchesRepo.updateMatch(match_id, {opponent_id});
